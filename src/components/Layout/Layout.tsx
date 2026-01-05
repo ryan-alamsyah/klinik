@@ -9,33 +9,16 @@ import Sidebar from '../Sidebar/Sidebar';
 
 const Layout = () => {
 
-
-      const [isLayoutOpen, setIsLayoutOpen] = useState(false);
-
-      const [isAntreanActive, setIsAntreanActive] = useState(true);
-      
-     const layoutClass = isLayoutOpen ?'layout' : 'layoutOffSidebar';
-
-    const handleToggleLayout = () => {
-        setIsLayoutOpen(!isLayoutOpen);
-    }
-
-    const handleToggleAntrean = () => {
-        setIsAntreanActive(!isAntreanActive);
-    }
-   
-
  const location = useLocation();
  const isAntreanPage = location.pathname === '/nomor-antrean';
-
+ const layoutClass  = isAntreanPage ? 'layoutOffSidebar' : 'layout';
     
     return (
         <>
         <div className={`${layoutClass} `}>
       {/* HEADER */}
       <Header 
-        onToggleLayout={handleToggleLayout} 
-        onToggleAntrean={handleToggleAntrean} 
+        
       />
     
       {!isAntreanPage && <Sidebar

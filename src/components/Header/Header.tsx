@@ -1,18 +1,15 @@
 
 import RealTimeClock from '../Ui/timer';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+
 import '../Layout/Layout.css';
 
 
 
-   interface HeaderProps {
-    onToggleAntrean: () => void;
-    onToggleLayout: () => void;    
-   }
 
 
-    export const Header = ({onToggleAntrean, onToggleLayout}: HeaderProps) => {
+
+    export const Header = () => {
 
    
     return (
@@ -36,8 +33,8 @@ import '../Layout/Layout.css';
         </div>
         */}
 <div className='flex justify-center items-center w-full gap-8'>
-  <Link className="hover:cursor-pointer" to="/admin"  onClick={onToggleLayout}>Nomor Pendaftaran</Link>
-  <Link to="/nomor-antrean" onClick={onToggleAntrean}>Nomor Terpanggil</Link>
+  <Link className="hover:cursor-pointer" to="/admin"  >Nomor Layout</Link>
+  <Link to="/nomor-antrean" >Nomor Terpanggil</Link>
 </div>
       
       </header>
