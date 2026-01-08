@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { FaChartLine } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
+import { GoDotFill } from "react-icons/go";
 
 const Sidebar = () => {
 
@@ -27,14 +28,14 @@ const Sidebar = () => {
                 <Link to="/nomor-antrean" className="text-gray-500 flex items-center gap-8 "><AiFillHome className='text-2xl'/>Nomor Antrean</Link>
             </div>
         <div className="flex flex-col gap-1 justify-center">
-        <button onClick={handleMenu} className='hover:bg-slate-600 p-2 cursor-pointer flex items-center gap-4'>Front Office</button>
-       <FaUserGroup />
+        <button onClick={handleMenu} className='flex items-center gap-8 p-4 hover:bg-gray-800 text-gray-500 cursor-pointer'><FaUserGroup className='text-2xl'/>Front Office</button>
+       
 
 
-        <Link to='/list-pasien' className={subMenuClass}>Pendafaran Pasien</Link>
-        <Link to='/data-pasien' className={subMenuClass}>Data Pasien</Link>
-        <Link to='/data-pasien' className={subMenuClass}>Data Pasien</Link>
-        <Link to='/data-pasien' className={subMenuClass}>Data Pasien</Link>
+        <Link to='/list-pasien' className={subMenuClass} flx><GoDotFill />Pendafaran Pasien</Link>
+        <Link to='/data-pasien' className={subMenuClass}><GoDotFill />Data Pasien</Link>
+        <Link to='/data-pasien' className={subMenuClass}><GoDotFill />Data Pasien</Link>
+        <Link to='/data-pasien' className={subMenuClass}><GoDotFill />Data Pasien</Link>
         
           
         </div>
