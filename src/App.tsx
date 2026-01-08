@@ -2,9 +2,11 @@
 import './index.css'
 import Layout from './components/Layout/Layout'
 import { Routes, Route } from "react-router";
-import AntrianPendaftaranPage from './components/Antrian/AntrianPendaftaranPage';
-import AdminPage from './components/DashboardPage.tsx/DashboardPage';
-import DashboardPage from './components/DashboardPage.tsx/DashboardPage';
+import DashboardPage from './Pages/DashboardPage/DashboardPage';
+import AntrianPendaftaranPage from './Pages/Antrian/AntrianPendaftaranPage';
+import Listpasien from './Pages/Pasien/Listpasien';
+
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
    
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/nomor-antrean" element={<AntrianPendaftaranPage />} />
+          <Route path="/list-pasien" element={<Listpasien />} />
           
         </Route>
       </Routes>

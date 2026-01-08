@@ -1,8 +1,12 @@
 
 import RealTimeClock from '../Ui/timer';
 import { Link } from 'react-router-dom';
+import { FaBars } from "react-icons/fa";
+import { IoIosArrowDropright } from "react-icons/io";
+import { MdLocalHospital } from "react-icons/md";
 
 import '../Layout/Layout.css';
+
 
 
 
@@ -14,9 +18,14 @@ import '../Layout/Layout.css';
    
     return (
         <>
-        <header className="header w-full bg-emerald-800 flex p-4">
+        <header className="header bg-emerald-800 flex">
+          
+          <h1 className='font-bold text-2xl p-2 flex items-center gap-2'><MdLocalHospital />Klinik</h1>
+                       
+         
+
         <div className='flex justify-center items-center w-full'>
-        <h1 className='font-bold text-2xl p-2'>Klinik</h1>
+        
         <div>
             <div><RealTimeClock /></div>
         </div>
@@ -33,7 +42,7 @@ import '../Layout/Layout.css';
         </div>
         */}
 <div className='flex justify-center items-center w-full gap-8'>
-  <Link className="hover:cursor-pointer" to="/admin"  >Nomor Layout</Link>
+  <Link className="hover:cursor-pointer" to="/dashboard"  >Nomor Layout</Link>
   <Link to="/nomor-antrean" >Nomor Terpanggil</Link>
 </div>
       

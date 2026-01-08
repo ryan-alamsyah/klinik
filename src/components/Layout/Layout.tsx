@@ -6,18 +6,23 @@ import './Layout.css'
 
 import { Header } from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
+import { Minimize } from '@mui/icons-material';
 
 const Layout = () => {
 
  const location = useLocation();
  const isAntreanPage = location.pathname === '/nomor-antrean';
  const layoutClass  = isAntreanPage ? 'layoutOffSidebar' : 'layout';
+ const [minimize, setMinimize] = useState<boolean>(false);
+ const handleToggle = () => {
+  setMinimize(!minimize);
+ }
     
     return (
         <>
         <div className={`${layoutClass} `}>
       {/* HEADER */}
-      <Header 
+      <Header onToggle={handleToggle} isMinimized={minimize}
         
       />
     
