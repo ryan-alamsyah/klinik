@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import { useState } from "react";
 import { IoMdArrowDropleft } from "react-icons/io";
 
@@ -24,7 +25,7 @@ const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
          <div className="flex flex-col justify-center ">
                   <button
                     onClick={handleMenuFarmasi}
-                    className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-800 text-gray-500  rounded-xl hover:text-white  cursor-pointer"
+                    className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600 hover:duration-700  text-gray-500  rounded-xl hover:text-white  cursor-pointer"
                   ><div className="flex items-center gap-2">
          <MdLocalPharmacy  />
                     Farmasi Stok
@@ -36,13 +37,13 @@ const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
                 }`}/>
                   </button>
                   <Link to="/list-pasien" className={subMenuClassFarmasi}>
-                    <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+                    <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
                       Data Obat
                     </div>
                   </Link>
                   <Link to="/list-pasien" className={subMenuClassFarmasi}>
-                    <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+                    <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
                      Inventory Alkes
                     </div>

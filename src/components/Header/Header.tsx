@@ -9,7 +9,7 @@ import '../Layout/Layout.css';
    
     return (
       <>
-        <header className="header bg-emerald-800 flex justify-between px-4">
+        <header className="header bg-emerald-600 shadow-lg shadow-emerald-600/50 flex justify-between px-4">
           <div>
             <h1 className="font-bold text-2xl p-2 flex items-center gap-2">
               

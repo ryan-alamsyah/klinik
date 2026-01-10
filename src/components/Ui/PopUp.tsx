@@ -1,31 +1,38 @@
-import Swal from "sweetalert2";
-import { AiFillHome } from "react-icons/ai";
+import React from "react";
 
-const Sidebar: React.FC = () => {
-  const handleClick = () => {
-    Swal.fire({
-      title: "Konfirmasi",
-      text: "Buka nomor antrean di tab baru?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Lanjutkan",
-      cancelButtonText: "Batal",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.open("/nomor-antrean", "_blank");
-      }
-    });
-  };
+interface PopUpProps {
+  open: boolean;
+  onConfirm: () => void;
+  onClose: () => void;
+}
+
+const PopUp: React.FC<PopUpProps> = ({ open, onConfirm, onClose }) => {
+  if (!open) return null;
 
   return (
-    <div
-      onClick={handleClick}
-      className="hover:bg-emerald-800 w-full p-4 cursor-pointer flex gap-4 rounded-xl text-gray-500 hover:text-white"
-    >
-      <AiFillHome className="text-2xl" />
-      <span>Nomor Antrean</span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="w-96 bg-amber-300 border-2 border-amber-900 rounded-xl p-6 text-center">
+        <h1 className="text-xl font-bold mb-4">Konfirmasi</h1>
+        <p className="mb-6">Buka nomor antrean di tab baru?</p>
+
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded bg-gray-300"
+          >
+            Batal
+          </button>
+
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 rounded bg-emerald-600 text-white"
+          >
+            Lanjutkan
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default PopUp;

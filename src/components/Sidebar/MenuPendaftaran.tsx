@@ -36,7 +36,7 @@ const MenuPendaftaran = () => {
   <div className="flex flex-col justify-center">
           <button
             onClick={handleMenuPendaftaran}
-            className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-800 text-gray-500  rounded-xl hover:text-white  cursor-pointer"
+            className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600  text-gray-500  rounded-xl hover:text-white  cursor-pointer"
           ><div className="flex items-center gap-2">
  <FaAddressBook  />
             Pendaftaran
@@ -48,19 +48,19 @@ const MenuPendaftaran = () => {
         }`}/>
           </button>
           <Link to="/list-pasien" className={subMenuClassPendaftaran}>
-            <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+            <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
               Registrasi Pasien
             </div>
           </Link>
-           <Link to='/Dashboard' className={subMenuClassPendaftaran}>
-            <div onClick={handleAlert}  className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+           <Link to='/tombol' className={subMenuClassPendaftaran}>
+            <div onClick={handleAlert}  className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
              Monitor Antrean
             </div>
           </Link>
           <Link to="/list-pasien" className={subMenuClassPendaftaran}>
-            <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+            <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
              Jadwal Dokter
             </div>

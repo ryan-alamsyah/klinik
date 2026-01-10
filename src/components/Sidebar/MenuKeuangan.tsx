@@ -22,7 +22,7 @@ const MenuKeuangan = () => {
       <div className="flex flex-col justify-center ">
         <button
           onClick={handleMenuKeuangan}
-          className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-800 text-gray-500  rounded-xl hover:text-white  cursor-pointer"
+          className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600 hover:duration-700  text-gray-500  rounded-xl hover:text-white  cursor-pointer"
         >
           <div className="flex items-center gap-2">
             <TbReportMoney />
@@ -36,13 +36,13 @@ const MenuKeuangan = () => {
           />
         </button>
         <Link to="/list-pasien" className={subMenuClassKeuangan}>
-          <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+          <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
             Kasir
           </div>
         </Link>
         <Link to="/list-pasien" className={subMenuClassKeuangan}>
-          <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white">
+          <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
             Laporan
           </div>

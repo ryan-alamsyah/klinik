@@ -11,10 +11,10 @@ const Sidebar = () => {
     <>
       <aside className="border-2 border-gray-300 p-4 flex flex-col gap-2">
         <Link
-          to="/dashboard"
+          to="/tombol"
           className="text-gray-500 hover:text-white flex items-center gap-2 "
         >
-          <div className="hover:bg-emerald-800 hp w-full p-2 cursor-pointer flex gap-2 rounded-xl">
+          <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-2 rounded-xl">
             <FaChartLine className="text-xl" />
             <span>Dashboard</span>
           </div>

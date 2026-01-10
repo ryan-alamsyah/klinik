@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router";
 import DashboardPage from './Pages/DashboardPage/DashboardPage';
 import AntrianPendaftaranPage from './Pages/Antrian/AntrianPendaftaranPage';
 import DataPasienPage from './Pages/Pasien/DataPasienPage';
+import TombolAntrean from './Pages/Antrian/TombolAntrian';
 
 
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/nomor-antrean" element={<AntrianPendaftaranPage />} />
           <Route path="/list-pasien" element={<DataPasienPage />} />
+          <Route path="/tombol" element={<TombolAntrean />} />
           
         </Route>
       </Routes>
