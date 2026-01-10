@@ -4,10 +4,10 @@ import heroSvg from "../../assets/hero.svg";
 
 const AntrianPendaftaranPage = () => {
 
-    const [nama, setNama] = useState('NAFISHA KAYLA ALAMSYAH')
+    const [nama, setNama] = useState('UTSMAN BIN AFFAN')
     const [nomor, setNomor] = useState('A 2 0 1');
 
-    const namaPasien = "RYAN KAYLA ALAMSYAH MANGUNJAYA HADININGRAT ";
+    const namaPasien = "RYAN ALAMSYAH MANGUNsssJAYA HADININGRAT ";
     const [loket, setLoket ] = useState("TRIASE");
   const handlePanggil = () => {
    
