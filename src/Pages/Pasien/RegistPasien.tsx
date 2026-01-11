@@ -85,7 +85,7 @@ const RegistPasien = () => {
                   className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-sm ${
                     showAddForm 
                     ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' 
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-emerald-600/50 text-white hover:bg-emerald-700 cursor-pointer'
                   }`}
                 >
                   {showAddForm ? <X size={20} /> : <UserPlus size={20} />}

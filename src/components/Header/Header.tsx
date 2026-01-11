@@ -1,27 +1,27 @@
-
-import RealTimeClock from '../Ui/timer';
+import RealTimeClock from "../Ui/timer";
 import { FaStethoscope } from "react-icons/fa";
 
-import '../Layout/Layout.css';
+import "../Layout/Layout.css";
 
-    export const Header = () => {
-
-   
-    return (
-      <>
-        <header className="header bg-emerald-600 shadow-lg shadow-emerald-600/50 flex justify-between items-center px-8 py-12 h-18">
-          <div>
-            <h1 className="font-bold text-2xl p-2 flex items-center gap-2">
-              <div className="bg-white p-1.5 rounded-lg">
-        <FaStethoscope className=" text-emerald-600" size={24}/>
-              </div>
-             
+export const Header = () => {
+  return (
+    <>
+      <header className="header bg-emerald-600 shadow-lg shadow-emerald-600/50 flex justify-between items-center px-8 ">
+        <div>
+          <div className="font-bold text-xl p-2 flex items-center gap-2">
+            <div className="bg-white p-1.5 rounded-lg">
+              <FaStethoscope className=" text-emerald-600" size={24} />
+            </div>
+            <div className="flex flex-col">
               <span>Klinik As-Syifa </span>
-            </h1>
+              <span className="text-xs italic font-light">
+                "Melayani dengan Hati & Profesionalisme"
+              </span>
+            </div>
           </div>
+        </div>
 
-
-          {/* 
+        {/* 
         <div className="">
           <button className="transition-all duration-500 ease-in-out transform hover:cursor-pointer " onClick={HandleDarkMode} >
           {darkMode ?  <DarkModeIcon className="animate-in fade-in zoom-in duration-500"/> :
@@ -35,10 +35,10 @@ import '../Layout/Layout.css';
   <Link className="hover:cursor-pointer" to="/dashboard"  >Nomor Layout</Link>
 </div>
   */}
-          <div className=' flex items-center gap-8'>
-            <RealTimeClock />
-          </div>
-        </header>
-      </>
-    );
-}
+        <div className=" flex items-center flex-col">
+          <RealTimeClock />
+        </div>
+      </header>
+    </>
+  );
+};
