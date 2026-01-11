@@ -1,0 +1,131 @@
+{
+  "pasien": [
+    {
+      "id": "985f",
+      "name": "sd",
+      "nik": ""
+    },
+    {
+      "id": "a98e",
+      "name": "dagang",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": "2026-01-10T17:00:00.000Z",
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "9cce",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": "2025-11-06",
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "6fab",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "7e97",
+      "name": "d",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "8197",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "d8c0",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "d36e",
+      "name": "",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "8dbe",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "",
+      "pekerjaan": "",
+      "alamat": ""
+    },
+    {
+      "id": "8e27",
+      "name": "Ryan Alamsyah",
+      "nik": "",
+      "tempat": "35436",
+      "tglLahir": "2018-01-10",
+      "asuransi": "67836436",
+      "jk": "Laki-laki",
+      "tlp": "0826141235",
+      "pekerjaan": "",
+      "alamat": "CIBUBUBUR JWAKRA"
+    },
+    {
+      "id": "9e8f",
+      "name": "Ryan Alamsyah",
+      "nik": "9515027",
+      "tempat": "Bogor",
+      "tglLahir": null,
+      "asuransi": "",
+      "jk": "",
+      "tlp": "0826141235",
+      "pekerjaan": "",
+      "alamat": "f"
+    }
+  ],
+  "dokter": [],
+  "obat": []
+}

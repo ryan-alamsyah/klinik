@@ -34,6 +34,10 @@ const Layout = () => {
       <main className='main flex-1'>
        <Outlet />
       </main>
+         <footer className="mt-auto py-6 text-center text-slate-400 text-xs">
+        <p>&copy; 2026 Klinik As-Syifa. All rights reserved.</p>
+        <p className="mt-1">Sistem Informasi Manajemen Klinik Terpadu v2.1</p>
+      </footer>
     </div>
         </>
     )
