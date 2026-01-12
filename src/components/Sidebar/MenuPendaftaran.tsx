@@ -36,7 +36,7 @@ const MenuPendaftaran = () => {
   <div className="flex flex-col justify-center">
           <button
             onClick={handleMenuPendaftaran}
-            className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600  text-gray-500  rounded-xl hover:text-white  cursor-pointer"
+            className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600  text-sm text-gray-500  rounded-xl hover:text-white  cursor-pointer"
           ><div className="flex items-center gap-2">
  <FaAddressBook  />
             Pendaftaran
