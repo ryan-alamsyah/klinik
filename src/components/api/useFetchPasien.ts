@@ -4,6 +4,7 @@ import type { Dayjs } from "dayjs";
 
 
 type PasienResponse = {
+   id: string;
    name: string;
      nik: string;
      tempat: string;

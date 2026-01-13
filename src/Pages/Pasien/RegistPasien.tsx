@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { 
   Search, 
   UserPlus, 
@@ -7,23 +7,67 @@ import {
   Printer, 
   CheckCircle2, 
 } from 'lucide-react';
+import { useFetchPasien } from '../../components/api/useFetchPasien';
+import { axiosInstance } from "../../components/lib/axios";
+import { Form } from 'react-router-dom';
+
 
 const RegistPasien = () => {
+
+ const [currentDateTime, setCurrentDateTime] = useState(new Date());
+ 
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const [showQueueModal, setShowQueueModal] = useState(false);
-  type Patient = {
-    id: number;
-    nama: string;
-    nik: string;
-    alamat: string;
-    telp: string;
-    tglLahir: string;
+  const { fetchPasiens, pasiens} = useFetchPasien();
+  console.table(pasiens)
+      type FormState = { 
+        name: string;
+        nik: string;
+        
+      }
+
+  const [form, setForm] = useState<FormState>({
+    name: "",
+    nik: ''
+  }) 
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
+   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+  console.log("Data yang akan dikirim:", form);
+  const payload = {
+ ...form
+  }
+ 
+      try {
+        await axiosInstance.post("/pasien", payload);
   
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+        // refresh list pasien
+        await fetchPasiens();
+       
+  
+        // reset form
+        setForm({
+          name: "",
+          nik: "",
+        });
+      } catch (error) {
+        console.error(error);
+      } 
+    };
+
+  
+  const [selectedPatient, setSelectedPatient] = useState<FormState | null>(null);
   const [selectedPoli, setSelectedPoli] = useState('');
   const [queueNumber, setQueueNumber] = useState<string | null>(null);
+  {/* 
   const [patients] = useState([
     { id: 1, nama: 'Nurjaman', nik: '3274523071523532', alamat: 'Jl. Margonda No. 12, Depok', telp: '081236241977', tglLahir: '1985-05-20' },
     { id: 2, nama: 'Ryan Jaya Utama', nik: '3274523076345663', alamat: 'Kavling Hijau, Sawangan', telp: '085694221345', tglLahir: '1992-11-12' },
@@ -32,15 +76,15 @@ const RegistPasien = () => {
        { id: 2, nama: 'Ryan Jaya Utama', nik: '3274523076345663', alamat: 'Kavling Hijau, Sawangan', telp: '085694221345', tglLahir: '1992-11-12' },
         { id: 2, nama: 'Ryan Jaya Utama', nik: '3274523076345663', alamat: 'Kavling Hijau, Sawangan', telp: '085694221345', tglLahir: '1992-11-12' },
   ]);
-
+*/}
   // Filter pasien berdasarkan pencarian
-  const filteredPatients = patients.filter(p => 
-    p.nama.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredPatients = pasiens.filter(p => 
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     p.nik.includes(searchQuery)
   );
 
-  const handleOpenQueue = (patient: Patient) => {
-    setSelectedPatient(patient);
+  const handleOpenQueue = (pasiens: FormState) => {
+    setSelectedPatient(pasiens);
     setShowQueueModal(true);
   };
 
@@ -97,7 +141,10 @@ const RegistPasien = () => {
         </div>
 
         {/* Form Registrasi Pasien Baru (Collapsible) */}
-        {showAddForm && (
+      
+        {
+        showAddForm && (
+          <form onSubmit={handleSubmit}>      
           <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
             <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
               <h2 className="text-emerald-800 font-bold flex items-center gap-2">
@@ -110,11 +157,11 @@ const RegistPasien = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Nama Lengkap Pasien *</label>
-                    <input type="text" className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Contoh: Budi Santoso" />
+                    <input type="text" name='name' value={form.name} onChange={handleChange} required className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Contoh: Budi Santoso" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Nomor Induk Kependudukan (NIK) *</label>
-                    <input type="text" className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="16 Digit NIK" />
+                    <input type="text" name='nik' value={form.nik} onChange={handleChange} className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="16 Digit NIK" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -153,10 +200,11 @@ const RegistPasien = () => {
               </div>
               <div className="mt-8 flex justify-end gap-3">
                 <button onClick={() => setShowAddForm(false)} className="px-6 py-2.5 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition">Batal</button>
-                <button className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-md shadow-emerald-200 transition">Simpan Data Pasien</button>
+                <button type='submit' className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-md shadow-emerald-200 transition">Simpan Data Pasien</button>
               </div>
             </div>
           </div>
+           </form>
         )}
 
         {/* Daftar Pasien Card */}
@@ -176,12 +224,12 @@ const RegistPasien = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredPatients.length > 0 ? (
-                  filteredPatients.map((p) => (
+                {pasiens.length > 0 ? (
+                  pasiens.map((p) => (
                     <tr key={p.id} className="hover:bg-emerald-50/40 transition">
                       <td className="px-6 py-4">
-                        <div className="font-bold text-slate-800">{p.nama}</div>
-                        <div className="text-xs text-slate-500">{p.telp}</div>
+                        <div className="font-bold text-slate-800">{p.name}</div>
+                        <div className="text-xs text-slate-500">{p.name}</div>
                       </td>
                       <td className="px-6 py-4  text-sm text-slate-600">{p.nik}</td>
                       <td className="px-6 py-4 text-sm text-slate-500 max-w-xs truncate">{p.alamat}</td>
@@ -220,7 +268,7 @@ const RegistPasien = () => {
                   </div>
                   <h3 className="text-xl font-bold text-slate-800">Pendaftaran Berobat</h3>
                   <p className="text-sm text-slate-500">Silakan pilih poli tujuan untuk pasien:</p>
-                  <p className="font-bold text-emerald-700 mt-1">{selectedPatient?.nama}</p>
+                  <p className="font-bold text-emerald-700 mt-1">{selectedPatient?.name}</p>
                 </div>
                 <div className="p-6 space-y-4">
                   <div className="space-y-2">
@@ -270,11 +318,11 @@ const RegistPasien = () => {
                   <div className="mt-4 pt-4 border-t border-slate-200 space-y-1">
                     <div className="text-[10px] text-slate-400 font-mono flex justify-between px-4">
                       <span>NAMA:</span>
-                      <span className="text-slate-600">{selectedPatient?.nama}</span>
+                      <span className="text-slate-600">{selectedPatient?.name}</span>
                     </div>
                     <div className="text-[10px] text-slate-400 font-mono flex justify-between px-4">
                       <span>WAKTU:</span>
-                      <span className="text-slate-600">11/01/2026 15:25</span>
+                      <span className="text-slate-600">{currentDateTime.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
