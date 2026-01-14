@@ -1,4 +1,4 @@
-import RealTimeClock from "../Ui/timer";
+import RealTimeClock from "../Ui/RealTimeClock";
 import { FaStethoscope } from "react-icons/fa";
 
 import "../Layout/Layout.css";

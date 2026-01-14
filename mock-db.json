@@ -1,54 +1,14 @@
 {
   "pasien": [
     {
-      "id": "985f",
-      "name": "sd",
-      "nik": ""
-    },
-    {
-      "id": "c4c9",
+      "id": "8b28",
       "name": "Ryan Alamsyah",
-      "nik": "9515027"
-    },
-    {
-      "id": "7718",
-      "name": "dagang",
-      "nik": "9515027"
-    },
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
-    }
-    ,
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
-    }
-    ,
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
-    }
-    ,
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
-    }
-    ,
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
-    }
-    ,
-    {
-      "id": "909d",
-      "name": "Ryan Alamsyah",
-      "nik": " 436346"
+      "nik": "9515027",
+      "tlp": "0826141235",
+      "tempatLahir": "Bogorr",
+      "tglLahir": "2026-01-07",
+      "alamat": "Puri Harmoni 9",
+      "gender": "Laki-laki"
     }
   ],
   "dokter": [],

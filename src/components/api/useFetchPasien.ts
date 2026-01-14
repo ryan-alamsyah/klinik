@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
 import type { Dayjs } from "dayjs";
 
-
+{/* tglLahir: Dayjs | null; 
+  kalau pakau MUI */}
 type PasienResponse = {
    id: string;
    name: string;
      nik: string;
-     tempat: string;
-     tglLahir: Dayjs | null;
+     tempatLahir: string;
+      tglLahir: string;
      asuransi: string;
-     jk: string;
+     gender: string;
      tlp: string;
      pekerjaan:string;
      alamat: string;
