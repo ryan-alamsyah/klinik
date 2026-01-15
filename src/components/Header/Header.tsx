@@ -13,7 +13,7 @@ export const Header = () => {
               <FaStethoscope className=" text-emerald-600" size={24} />
             </div>
             <div className="flex flex-col">
-              <span>Klinik As-Syifa </span>
+              <span className="text-lg">Klinik As-Syifa </span>
               <span className="text-xs italic font-light">
                 "Melayani dengan Hati & Profesionalisme"
               </span>

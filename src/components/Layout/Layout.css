@@ -74,7 +74,12 @@
 /* Main */
 .main {
   grid-area: main;
-  padding: 20px 100px;
+  padding: 20px;
   overflow-y: auto;
   height: 100vh;
+}
+
+/* Untuk scrollbar vertikal */
+::-webkit-scrollbar {
+  width: 8px; /* Sesuaikan dengan ketebalan yang diinginkan, misal 4px, 6px, dll. */
 }

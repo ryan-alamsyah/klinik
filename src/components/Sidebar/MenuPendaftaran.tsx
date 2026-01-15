@@ -39,7 +39,7 @@ const MenuPendaftaran = () => {
             className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600  text-sm text-gray-500  rounded-xl hover:text-white  cursor-pointer"
           ><div className="flex items-center gap-2">
  <FaAddressBook  />
-            Pendaftaran
+            <span className="text-sm">Pendaftaran</span>
           </div>
 
            
@@ -50,19 +50,25 @@ const MenuPendaftaran = () => {
           <Link to="/list-pasien" className={subMenuClassPendaftaran}>
             <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
-              Registrasi Pasien
+              <span className="text-sm">Registrasi Pasien</span>
+             
             </div>
           </Link>
            <Link to='/tombol' className={subMenuClassPendaftaran}>
             <div onClick={handleAlert}  className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
+              <span className="text-sm">
              Monitor Antrean
+             </span>
             </div>
           </Link>
           <Link to="/list-pasien" className={subMenuClassPendaftaran}>
             <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
               <GoDotFill />
-             Jadwal Dokter
+               <span className="text-sm">
+                Jadwal Dokter
+              </span>
+             
             </div>
           </Link>
          

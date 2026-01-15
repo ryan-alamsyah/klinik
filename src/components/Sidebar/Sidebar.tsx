@@ -9,14 +9,14 @@ import MenuKeuangan from "./MenuKeuangan";
 const Sidebar = () => {
   return (
     <>
-      <aside className="border-2 border-gray-300  py-4 px-2 flex flex-col gap-2 w-64">
+      <aside className="border-2 border-gray-300  py-4 px-2 flex flex-col gap-2 w-56 overflow-y-scroll pb-18">
         <Link
           to="/tombol"
           className="text-gray-500 hover:text-white flex items-center gap-2 text-sm "
         >
           <div className="hover:bg-emerald-600 hp w-full p-2 cursor-pointer flex gap-2 rounded-xl">
             <FaChartLine className="text-xl" />
-            <span>Dashboard</span>
+            <span className="text-sm">Dashboard</span>
           </div>
         </Link>
         <MenuPendaftaran />

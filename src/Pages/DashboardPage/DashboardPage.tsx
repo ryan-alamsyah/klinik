@@ -16,17 +16,16 @@ const DashboardPage = () => {
 
     return (
       <>
-        <div className="flex gap-4 mt-8 flex-col">
+        <div className="flex gap-4 flex-col">
           <div>
             <h2 className="text-slate-500 font-bold">
               Dashboard Klinik As-Syifa
             </h2>
           </div>
-          <div className="bg-emerald-600/50 rounded-2xl py-4 px-12 relative w-2xl flex justify-between items-center">
-            <div className="text-white font-bold text-sm">
+          <div className="bg-emerald-600 rounded-2xl py-4 px-4 w-lg flex justify-between items-center">
+            <div className="text-white font-bold text-sm gap-2 flex flex-col">
               <p>Selamat Datang</p>
-              <span>di Klinik As-Syifa</span>
-              <p>Cileungsi</p>
+              <span>di Pusat Layanan Kesehatan Klinik As-Syifa Cileungsi</span>
             </div>
             <div>
 <img src="src/assets/hero.png" className="w-72"></img>

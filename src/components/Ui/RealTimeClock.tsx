@@ -31,7 +31,7 @@ const RealTimeClock = () => {
   const seconds = currentDateTime.getSeconds().toString().padStart(2, '0');
 
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: '20px' }}>
+    <div style={{  padding: '20px', fontSize: '12px' }}>
       <span>
         {`${days} , ${day} ${month} ${year} - ${hours}:${minutes}:${seconds}`}
       </span>

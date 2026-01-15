@@ -26,7 +26,8 @@ const MenuPasien = () => {
                     className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600 hover:duration-700   text-gray-500  rounded-xl hover:text-white  cursor-pointer"
                   ><div className="flex items-center gap-2">
          <FaUserGroup  />
-                    Data Pasien
+         <span className="text-sm">Data Pasien</span>
+                    
                   </div>
         
                    
@@ -37,13 +38,15 @@ const MenuPasien = () => {
                   <Link to="/list-pasien" className={subMenuClassPasien}>
                     <div className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
-                      Database Pasien
+                      <span className="text-sm">Database Pasien</span>
+                      
                     </div>
                   </Link>
                    <Link to="/list-pasien" className={subMenuClassPasien}>
                     <div  className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
-                     Rekam Medis
+                      <span className="text-sm">Rekam Medis</span>
+                     
                     </div>
                   </Link>
                  

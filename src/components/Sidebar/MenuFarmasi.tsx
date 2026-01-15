@@ -28,7 +28,8 @@ const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
                     className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600 hover:duration-700  text-gray-500  rounded-xl hover:text-white  cursor-pointer"
                   ><div className="flex items-center gap-2">
          <MdLocalPharmacy  />
-                    Farmasi Stok
+         <span className="text-sm">Farmasi Stok</span>
+                    
                   </div>
         
                    
@@ -39,13 +40,15 @@ const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
                   <Link to="/list-pasien" className={subMenuClassFarmasi}>
                     <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
-                      Data Obat
+                      <span className="text-sm">Data Obat</span>
+                     
                     </div>
                   </Link>
                   <Link to="/list-pasien" className={subMenuClassFarmasi}>
                     <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
-                     Inventory Alkes
+                      <span className="text-sm">Inventory Alkes</span>
+                     
                     </div>
                   </Link>
                  

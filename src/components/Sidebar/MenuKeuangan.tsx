@@ -26,7 +26,8 @@ const MenuKeuangan = () => {
         >
           <div className="flex items-center gap-2">
             <TbReportMoney />
-            Keuangan
+            <span className="text-sm">Keuangan</span>
+            
           </div>
 
           <IoMdArrowDropleft
@@ -38,13 +39,15 @@ const MenuKeuangan = () => {
         <Link to="/list-pasien" className={subMenuClassKeuangan}>
           <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
-            Kasir
+            <span className="text-sm">Kasir</span>
+            
           </div>
         </Link>
         <Link to="/list-pasien" className={subMenuClassKeuangan}>
           <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
-            Laporan
+            <span className="text-sm">Laporan</span>
+            
           </div>
         </Link>
       </div>
