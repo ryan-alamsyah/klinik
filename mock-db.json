@@ -1,14 +1,24 @@
 {
   "pasien": [
     {
-      "id": "8b28",
+      "id": "f8c7",
       "name": "Ryan Alamsyah",
       "nik": "9515027",
-      "tlp": "0826141235",
+      "tlp": "",
       "tempatLahir": "Bogorr",
-      "tglLahir": "2026-01-07",
-      "alamat": "Puri Harmoni 9",
+      "tglLahir": "",
+      "alamat": "",
       "gender": "Laki-laki"
+    },
+    {
+      "id": "ce15",
+      "name": "dagang",
+      "nik": " 436346",
+      "tlp": "",
+      "tempatLahir": "",
+      "tglLahir": "",
+      "alamat": "",
+      "gender": "Perempuan"
     }
   ],
   "dokter": [],

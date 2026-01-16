@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
+{/* 
 import type { Dayjs } from "dayjs";
 
-{/* tglLahir: Dayjs | null; 
+tglLahir: Dayjs | null; 
   kalau pakau MUI */}
-type PasienResponse = {
+interface PasienResponse {
    id: string;
    name: string;
      nik: string;

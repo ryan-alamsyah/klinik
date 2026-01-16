@@ -3,12 +3,15 @@
   line-height: 1.5;
   font-weight: 400;
 
- 
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+/* Untuk scrollbar vertikal */
+::-webkit-scrollbar {
+  width: 8px; /* Sesuaikan dengan ketebalan yang diinginkan, misal 4px, 6px, dll. */
+}
 }
 
 @import "tailwindcss";

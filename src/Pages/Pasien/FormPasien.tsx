@@ -236,8 +236,7 @@ const FormPasien = () => {
             className={`flex items-center justify-center gap-2 px-4 py-2 rounded text-white
         ${
           isSubmitting ? "bg-gray-400" : "bg-emerald-600 hover:bg-emerald-700"
-        }`}
-          >
+        }`}>
             {isSubmitting && (
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             )}

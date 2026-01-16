@@ -79,7 +79,7 @@
   height: 100vh;
 }
 
-/* Untuk scrollbar vertikal */
-::-webkit-scrollbar {
-  width: 8px; /* Sesuaikan dengan ketebalan yang diinginkan, misal 4px, 6px, dll. */
+
+.active {
+  background-color: red;
 }

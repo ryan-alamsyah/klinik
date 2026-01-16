@@ -5,8 +5,11 @@ import MenuPendaftaran from "./MenuPendaftaran";
 import MenuPasien from "./MenuPasien";
 import MenuFarmasi from "./MenuFarmasi";
 import MenuKeuangan from "./MenuKeuangan";
+import { useState } from "react";
 
 const Sidebar = () => {
+
+ 
   return (
     <>
       <aside className="border-2 border-gray-300  py-4 px-2 flex flex-col gap-2 w-56 overflow-y-scroll pb-18">
@@ -19,7 +22,7 @@ const Sidebar = () => {
             <span className="text-sm">Dashboard</span>
           </div>
         </Link>
-        <MenuPendaftaran />
+        <MenuPendaftaran  />
         <MenuPasien />
         <MenuFarmasi />
         <MenuKeuangan />
