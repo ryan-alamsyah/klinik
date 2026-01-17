@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import { IoMdArrowDropleft } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 
 import { GoDotFill } from "react-icons/go";
 
@@ -30,8 +30,8 @@ const MenuKeuangan = () => {
             
           </div>
 
-          <IoMdArrowDropleft
-            className={`text-2xl transition-transform duration-300 ${
+          <IoIosArrowBack
+            className={`text-sm transition-transform duration-300 ${
               isVisibleKeuangan ? "-rotate-90" : "rotate-0"
             }`}
           />

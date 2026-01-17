@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
-import { IoMdArrowDropleft } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 
 import { GoDotFill } from "react-icons/go";
 import { MdLocalPharmacy } from "react-icons/md";
@@ -33,7 +33,7 @@ const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
                   </div>
         
                    
-                    <IoMdArrowDropleft className={`text-2xl transition-transform duration-300 ${
+                    <IoIosArrowBack className={`text-sm transition-transform duration-300 ${
                   isVisibleFarmasi ? "-rotate-90" :"rotate-0" 
                 }`}/>
                   </button>

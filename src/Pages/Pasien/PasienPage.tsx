@@ -1,29 +1,27 @@
-import FormPasienCstm from "./FormPasienCstm"
-import DataPasienCstm from "./DataPasienCstm"
+import FormPasienCstm from "./FormPasienCstm";
+import DataPasienCstm from "./DataPasienCstm";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../components/lib/axios";
 
-      interface Pasien {
-        id: string;
-    name: string;
-    nik: string;
-    tlp: string;
-    tempatLahir: string;
-    tglLahir: string;
-    alamat: string;
-    gender: string;
-  };
-
+interface Pasien {
+  id: string;
+  name: string;
+  nik: string;
+  tlp: string;
+  tempatLahir: string;
+  tglLahir: string;
+  alamat: string;
+  gender: string;
+}
 
 export const PasienPage = () => {
-    const [pasiens, setPasiens] = useState<Pasien[]>([]);
+  const [pasiens, setPasiens] = useState<Pasien[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchPasiens = async () => {
     try {
       setLoading(true);
-    
       const res = await axiosInstance.get("/pasien");
       setPasiens(res.data);
     } finally {
@@ -31,7 +29,6 @@ export const PasienPage = () => {
     }
   };
 
-  // Filter pasien berdasarkan pencarian
   const filteredPatients = pasiens.filter(
     (p) =>
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -42,14 +39,19 @@ export const PasienPage = () => {
     fetchPasiens();
   }, []);
 
-    return (
-        <>
-        <FormPasienCstm fetchPasiens={fetchPasiens}  searchQuery={searchQuery} setSearchQuery={setSearchQuery}  />
+  return (
+    <>
+      <div className="">
+        <FormPasienCstm
+          fetchPasiens={fetchPasiens}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
         <DataPasienCstm
           pasiens={filteredPatients}
           fetchPasiens={fetchPasiens}
         />
-        
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};

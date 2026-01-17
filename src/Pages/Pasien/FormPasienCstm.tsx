@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { axiosInstance } from "../../components/lib/axios";
-
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import { Search, UserPlus, X } from "lucide-react";
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 
 const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) => {
   const [showAddForm, setShowAddForm] = useState(false);
+   const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   interface Pasien {
     name: string;
@@ -23,7 +26,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
   }
 
   const [form, setForm] = useState<Pasien>({
-    name: "",
+    name   : "",
     nik: "",
     tlp: "",
     tempatLahir: "",
@@ -36,11 +39,17 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
   ) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value.trim(),
     });
   };
+ 
   const handleSubmit = async (e: React.FormEvent) => {
+  
     e.preventDefault();
+  
+ setIsSubmitting(true);
+   
+     
     console.log("Data yang akan dikirim:", form);
     const payload = {
       ...form,
@@ -49,7 +58,11 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
     try {
       await axiosInstance.post("/pasien", payload);
 
-      await fetchPasiens();
+      setTimeout(() => {
+        fetchPasiens();
+        setOpenSuccess(true);
+      }, 2000);
+      
       // reset form
 
       setForm({
@@ -63,11 +76,33 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+  setIsSubmitting(false);
+      }, 2000)
+    
     }
   };
 
+
+
   return (
     <>
+     <Snackbar
+            open={openSuccess}
+            autoHideDuration={3000}
+            onClose={() => setOpenSuccess(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              onClose={() => setOpenSuccess(false)}
+              severity="success"
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              Data Pasien Berhasil Disimpan
+            </Alert>
+          </Snackbar>
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
         <div className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-end gap-6">
@@ -94,7 +129,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                 onClick={() => setShowAddForm(!showAddForm)}
                 className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-sm ${
                   showAddForm
-                    ? "bg-slate-200 text-slate-700 hover:bg-slate-300"
+                    ? "bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer"
                     : "bg-emerald-600/50 text-white hover:bg-emerald-700 cursor-pointer"
                 }`}
               >
@@ -223,25 +258,35 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                       name="alamat"
                       value={form.alamat}
                       onChange={handleChange}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-[108px]"
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-27"
                       placeholder="Nama jalan, RT/RW, Kecamatan..."
                     ></textarea>
                   </div>
                 </div>
               </div>
               <div className="mt-8 flex justify-end gap-3">
+                <div className="flex justify-center mt-4 relative">
                 <button
                   onClick={() => setShowAddForm(false)}
-                  className="px-6 py-2.5 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2 rounded text-slate-600 border-slate-500 hover:bg-red-400 hover:text-white transition border cursor-pointer"
                 >
                   Batal
                 </button>
+                  </div>
+                 <div className="flex justify-center mt-4 relative">
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-md shadow-emerald-200 transition"
-                >
-                  Simpan Data Pasien
+                  disabled={isSubmitting}
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded text-white
+                  ${
+                    isSubmitting ? "bg-gray-400" : "bg-emerald-500 hover:bg-emerald-700 cursor-pointer"
+                  } `}>
+                    {isSubmitting && (
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    )}
+                  {isSubmitting ? "Menyimpan..." : "Simpan"}
                 </button>
+                </div>
               </div>
             </div>
           </div>

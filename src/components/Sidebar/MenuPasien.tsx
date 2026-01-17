@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
-import { IoMdArrowDropleft } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import { FaUserGroup } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 
@@ -31,7 +31,7 @@ const MenuPasien = () => {
                   </div>
         
                    
-                    <IoMdArrowDropleft className={`text-2xl transition-transform duration-300 ${
+                    <IoIosArrowBack className={`text-sm transition-transform duration-300 ${
                   isVisiblePasien ? "-rotate-90" :"rotate-0" 
                 }`}/>
                   </button>

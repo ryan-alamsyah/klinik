@@ -1,24 +1,24 @@
 {
   "pasien": [
     {
-      "id": "f8c7",
+      "id": "5c67",
+      "name": "NAFISHA KAYLA",
+      "nik": "325235",
+      "tlp": "0826141235",
+      "tempatLahir": "DEPOK",
+      "tglLahir": "",
+      "alamat": "JALAN JAWATENGAH",
+      "gender": "Perempuan"
+    },
+    {
+      "id": "d909",
       "name": "Ryan Alamsyah",
-      "nik": "9515027",
+      "nik": "9515027324535",
       "tlp": "",
-      "tempatLahir": "Bogorr",
+      "tempatLahir": "JAKARTA",
       "tglLahir": "",
       "alamat": "",
       "gender": "Laki-laki"
-    },
-    {
-      "id": "ce15",
-      "name": "dagang",
-      "nik": " 436346",
-      "tlp": "",
-      "tempatLahir": "",
-      "tglLahir": "",
-      "alamat": "",
-      "gender": "Perempuan"
     }
   ],
   "dokter": [],

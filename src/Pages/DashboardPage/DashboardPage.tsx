@@ -2,8 +2,6 @@ import { useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 
 
