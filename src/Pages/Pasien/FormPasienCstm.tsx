@@ -3,6 +3,9 @@ import { axiosInstance } from "../../components/lib/axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Search, UserPlus, X } from "lucide-react";
+import type { AlertColor } from "@mui/material";
+import Toast from "../../components/Ui/Toast";
+
 
 type Props = {
   fetchPasiens: () => Promise<void>;
@@ -11,9 +14,22 @@ type Props = {
 };
 
 const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) => {
+    // 1. Definisikan state notifikasi
+    const [notification, setNotification] = useState({
+      open: false,
+      message: "",
+      severity: "success" as AlertColor,
+    });
+  
+    // 2. Fungsi helper untuk memicu toast
+    const showToast = (message: string, severity: AlertColor = "success") => {
+      setNotification({ open: true, message, severity });
+    };
+
   const [showAddForm, setShowAddForm] = useState(false);
    const [openSuccess, setOpenSuccess] = useState<boolean>(false);
    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+   const [isErorr, setIsError] = useState<boolean | string>(false);
 
   interface Pasien {
     name: string;
@@ -39,31 +55,40 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
   ) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value.trim(),
+      [e.target.name]: e.target.value,
     });
+    if(form.nik.length < 16 ) {
+      setIsError("");
+   
+    } else {
+        setIsError("NIK lebih dari 16 karakter");
+    }
   };
  
   const handleSubmit = async (e: React.FormEvent) => {
-  
     e.preventDefault();
-  
- setIsSubmitting(true);
-   
-     
-    console.log("Data yang akan dikirim:", form);
     const payload = {
       ...form,
     };
-
-    try {
+    if(form.nik.length < 16) {
+   setIsError("*NIK harus berupa 16 digit angka lengkap.");
+   setIsSubmitting(false);
+     showToast("Input tidak boleh kosong!", "error");
+   return
+    } if(form.nik.length > 16) {
+      setIsError("NIK Lebih dari 16");
+    } else {
+       setIsSubmitting(true);
+       try {
       await axiosInstance.post("/pasien", payload);
 
       setTimeout(() => {
         fetchPasiens();
-        setOpenSuccess(true);
+        {/*  setOpenSuccess(true); */}
+       showToast("Data berhasil disimpan!", "success");
+        setShowAddForm(false);
       }, 2000);
-      
-      // reset form
+
 
       setForm({
         name: "",
@@ -78,16 +103,18 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
       console.error(error);
     } finally {
       setTimeout(() => {
-  setIsSubmitting(false);
-      }, 2000)
-    
+        setIsSubmitting(false);
+      }, 2000);
     }
+    }
+    
   };
 
 
 
   return (
     <>
+    {/*
      <Snackbar
             open={openSuccess}
             autoHideDuration={3000}
@@ -103,6 +130,11 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
               Data Pasien Berhasil Disimpan
             </Alert>
           </Snackbar>
+           */}
+           <Toast
+                  {...notification}
+                  onClose={() => setNotification({ ...notification, open: false })}
+                />
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
         <div className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-end gap-6">
@@ -173,13 +205,15 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                       Nomor Induk Kependudukan (NIK) *
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       name="nik"
                       value={form.nik}
                       onChange={handleChange}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                       placeholder="16 Digit NIK"
-                    />
+                      className={`w-full p-2.5 border rounded-lg 
+                        ${isErorr ? "border-red-700 focus:ring-red-500 outline-none" : "border-slate-200 focus:ring-emerald-500 outline-none"}
+                        `}
+                    /> <span className={`${isErorr ? "text-red-600 block text-xs" : "hidden"}`}>{isErorr}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -254,10 +288,10 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                       Alamat Lengkap
                     </label>
                     <textarea
-                      typeof="text"
+                     
                       name="alamat"
                       value={form.alamat}
-                      onChange={handleChange}
+                     onChange={handleChange}
                       className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-27"
                       placeholder="Nama jalan, RT/RW, Kecamatan..."
                     ></textarea>

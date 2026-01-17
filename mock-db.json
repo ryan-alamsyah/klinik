@@ -1,24 +1,44 @@
 {
   "pasien": [
     {
-      "id": "5c67",
-      "name": "NAFISHA KAYLA",
-      "nik": "325235",
-      "tlp": "0826141235",
-      "tempatLahir": "DEPOK",
-      "tglLahir": "",
-      "alamat": "JALAN JAWATENGAH",
-      "gender": "Perempuan"
+      "id": "62e1",
+      "name": "Ryan Alamsyah",
+      "nik": "72684124",
+      "tlp": "79327813",
+      "tempatLahir": "Jakarta",
+      "tglLahir": "2026-01-13",
+      "alamat": "Puri Harmoni 9 extension blok a6 no 8 cikahuripan",
+      "gender": "Laki-laki"
     },
     {
-      "id": "d909",
-      "name": "Ryan Alamsyah",
-      "nik": "9515027324535",
+      "id": "75e6",
+      "name": "NAFISHA",
+      "nik": "1234567891011121",
       "tlp": "",
-      "tempatLahir": "JAKARTA",
+      "tempatLahir": "",
       "tglLahir": "",
       "alamat": "",
-      "gender": "Laki-laki"
+      "gender": ""
+    },
+    {
+      "id": "3bd2",
+      "name": "NAFISHA",
+      "nik": "1234567890122222",
+      "tlp": "",
+      "tempatLahir": "",
+      "tglLahir": "",
+      "alamat": "",
+      "gender": ""
+    },
+    {
+      "id": "c260",
+      "name": "ryan alamsyah",
+      "nik": "1231241241243211",
+      "tlp": "",
+      "tempatLahir": "",
+      "tglLahir": "",
+      "alamat": "",
+      "gender": ""
     }
   ],
   "dokter": [],

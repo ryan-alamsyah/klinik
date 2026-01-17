@@ -15,6 +15,7 @@ import { UserPlus } from "lucide-react";
 import type { AlertColor } from "@mui/material";
 import Toast from "../../components/Ui/Toast";
 import Swal from "sweetalert2";
+import AlertDialogSlide from "../../components/Ui/Dialog";
 
 interface Pasien {
   id: string;
@@ -33,6 +34,42 @@ interface Props {
 }
 
 const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [isSpinner, setIsSpinner] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [showQueueModal, setShowQueueModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Pasien | null>(null);
+  const [selectedPoli, setSelectedPoli] = useState("");
+  const [queueNumber, setQueueNumber] = useState<string | null>(null);
+
+  const { deletePasien } = useDeletePasien();
+  const { editPasien } = useEditPasien();
+  
+
+  const [form, setForm] = useState<Pasien>({
+    id: "",
+    name: "",
+    nik: "",
+    tlp: "",
+    tempatLahir: "",
+    tglLahir: "",
+    alamat: "",
+    gender: "",
+  });
+
+  interface Pasien {
+    id: string;
+    name: string;
+    nik: string;
+    tlp: string;
+    tempatLahir: string;
+    tglLahir: string;
+    alamat: string;
+    gender: string;
+  }
+
   // 1. Definisikan state notifikasi
   const [notification, setNotification] = useState({
     open: false,
@@ -45,19 +82,8 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     setNotification({ open: true, message, severity });
   };
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  interface Pasien {
-    id: string;
-    name: string;
-    nik: string;
-    tlp: string;
-    tempatLahir: string;
-    tglLahir: string;
-    alamat: string;
-    gender: string;
-  }
-   const { deletePasien } = useDeletePasien();
- const handleAlert = async (id: string) => {
+  const handleDeleteBtn = async (id: string) => {
+   
     Swal.fire({
       title: "Konfirmasi",
       text: "Yakin ingin menghapus data ini?",
@@ -65,26 +91,26 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
       showCancelButton: true,
       confirmButtonText: "Hapus",
       customClass: {
-        confirmButton: "bg-red-600 p-2 rounded text-white mr-4 hover:bg-red-800 cursor-pointer",
-        cancelButton: "bg-slate-500 px-4 py-2 rounded text-white mr-2 hover:bg-slate-600 cursor-pointer",
+        confirmButton:
+          "bg-red-600 p-2 rounded text-white mr-4 hover:bg-red-800 cursor-pointer",
+        cancelButton:
+          "bg-slate-500 px-4 py-2 rounded text-white mr-2 hover:bg-slate-600 cursor-pointer",
       },
       buttonsStyling: false,
       cancelButtonText: "Batal",
     }).then(async (result) => {
       if (result.isConfirmed) {
-         const success = await deletePasien(id);
-         if (success) {
-        await fetchPasiens();
-        showToast("Data berhasil dihapus!", "success");
-      } else {
-        showToast("Gagal Menghapus Data!", "error");
+        const success = await deletePasien(id);
+        if (success) {
+          await fetchPasiens();
+          showToast("Data berhasil dihapus!", "success");
+        } else {
+          showToast("Gagal Menghapus Data!", "error");
+        }
       }
-         }
-      
     });
   };
 
-  const { editPasien } = useEditPasien();
   const handleEditBtn = async (id: string) => {
     if (!selectedPatient) return;
 
@@ -103,11 +129,6 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     }
   };
 
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
-  const [isSpinner, setIsSpinner] = useState(false);
-  const [openSuccess, setOpenSuccess] = useState(false);
-
   const handleUpdateBtn = async () => {
     try {
       setIsSpinner(true);
@@ -122,14 +143,6 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     }
   };
 
-  const [showQueueModal, setShowQueueModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-
-  // Use the same type as pasiens, which is likely PasienResponse
-  const [selectedPatient, setSelectedPatient] = useState<Pasien | null>(null);
-  const [selectedPoli, setSelectedPoli] = useState("");
-  const [queueNumber, setQueueNumber] = useState<string | null>(null);
-
   // Accept the same type as pasiens, which is likely PasienResponse
   const handleOpenQueue = (pasiens: Pasien) => {
     setSelectedPatient(pasiens);
@@ -141,6 +154,8 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     setShowEditModal(true);
   };
 
+  {
+    /* 
  
   const handleDelete = async (id: string) => {
     const confirmDelete = window.confirm("Yakin ingin menghapus data ini?");
@@ -157,34 +172,16 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
       }
     } 
   };
-
+*/
+  }
   const handleProcessQueue = () => {
     if (!selectedPoli) return;
-    const randomNum = Math.floor(Math.random() * 50) + 1
+    const randomNum = Math.floor(Math.random() * 50) + 1;
     const code =
       selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
     setQueueNumber(`${code}-${randomNum}`);
     setCurrentDateTime(currentDateTime);
   };
-  interface Pasien {
-    name: string;
-    nik: string;
-    tlp: string;
-    tempatLahir: string;
-    tglLahir: string;
-    alamat: string;
-    gender: string;
-  }
-  const [form, setForm] = useState<Pasien>({
-    id: "",
-    name: "",
-    nik: "",
-    tlp: "",
-    tempatLahir: "",
-    tglLahir: "",
-    alamat: "",
-    gender: "",
-  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -212,7 +209,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   };
 
   return (
-    <div className="  bg-slate-50  text-slate-900  pt-8 pb-14">
+    <div className="  bg-slate-50  text-slate-900 pb-14">
       {/* Main Search & Actions Card */}
 
       {/* Form Registrasi Pasien Baru (Collapsible) */}
@@ -305,7 +302,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                         </button>
                         <button
                           title="Hapus"
-                          onClick={() => handleAlert(p.id)}
+                          onClick={() => handleDeleteBtn(p.id)}
                           className="inline-flex items-center p-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition shadow-sm cursor-pointer"
                         >
                           <Trash2 size={14} />
@@ -570,7 +567,6 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                         Alamat Lengkap
                       </label>
                       <textarea
-                        typeof="text"
                         name="alamat"
                         value={selectedPatient?.alamat}
                         onChange={handleChange}
