@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ClipboardList,
   Printer,
@@ -16,6 +16,7 @@ import type { AlertColor } from "@mui/material";
 import Toast from "../../components/Ui/Toast";
 import Swal from "sweetalert2";
 import AlertDialogSlide from "../../components/Ui/Dialog";
+import { axiosInstance } from "../../components/lib/axios";
 
 interface Pasien {
   id: string;
@@ -46,18 +47,6 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
 
   const { deletePasien } = useDeletePasien();
   const { editPasien } = useEditPasien();
-  
-
-  const [form, setForm] = useState<Pasien>({
-    id: "",
-    name: "",
-    nik: "",
-    tlp: "",
-    tempatLahir: "",
-    tglLahir: "",
-    alamat: "",
-    gender: "",
-  });
 
   interface Pasien {
     id: string;
@@ -69,6 +58,33 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     alamat: string;
     gender: string;
   }
+  interface AntreanPasien {
+    id: string;
+    pasienId: string;
+    noAntrean: string;
+    name: string;
+    poli: string;
+    gender: string;
+  }
+
+  const [form, setForm] = useState<Pasien>({
+    id: "",
+    name: "",
+    nik: "",
+    tlp: "",
+    tempatLahir: "",
+    tglLahir: "",
+    alamat: "",
+    gender: "",
+  });
+  const [formAntrean, setFormAntrean] = useState<AntreanPasien>({
+    id: "",
+    pasienId: "",
+    noAntrean: "",
+    name: "",
+    poli: "",
+    gender: "",
+  });
 
   // 1. Definisikan state notifikasi
   const [notification, setNotification] = useState({
@@ -83,10 +99,13 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   };
 
   const handleDeleteBtn = async (id: string) => {
-   
+    const pasienToDelete = pasiens.find((p) => p.id === id);
+    const namaPasien = pasienToDelete ? pasienToDelete.name : "Data ini";
+
     Swal.fire({
       title: "Konfirmasi",
-      text: "Yakin ingin menghapus data ini?",
+      html: `Yakin ingin menghapus data pasien: <br>
+         <b style="color: #047857; font-size: 1.1rem;">${namaPasien}</b>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
@@ -129,7 +148,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     }
   };
 
-  const handleUpdateBtn = async () => {
+  const handleRefetchData = async () => {
     try {
       setIsSpinner(true);
 
@@ -144,7 +163,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   };
 
   // Accept the same type as pasiens, which is likely PasienResponse
-  const handleOpenQueue = (pasiens: Pasien) => {
+  const handleOpenAntrean = (pasiens: Pasien) => {
     setSelectedPatient(pasiens);
     setShowQueueModal(true);
   };
@@ -174,17 +193,28 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   };
 */
   }
-  const handleProcessQueue = () => {
+  const handleConfirmAntrean = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!selectedPoli) return;
     const randomNum = Math.floor(Math.random() * 50) + 1;
     const code =
       selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
     setQueueNumber(`${code}-${randomNum}`);
-    setCurrentDateTime(currentDateTime);
+    const payload = {
+      ...formAntrean,
+      code,
+    };
+
+    try {
+      await axiosInstance.post("/antrean", payload);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setForm({
@@ -201,6 +231,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     setShowEditModal(false);
     setSelectedPatient(null);
   };
+
   const closeModalsAntrean = () => {
     setShowQueueModal(false);
     setSelectedPatient(null);
@@ -239,7 +270,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
           <h2 className="font-bold text-slate-700">Data Pasien Terdaftar</h2>
           <div className="flex items-center gap-2">
             <button
-              onClick={handleUpdateBtn}
+              onClick={handleRefetchData}
               title="Refresh data"
               className="cursor-pointer"
             >
@@ -288,7 +319,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                       <td className="flex justify-center gap-1.5 items-center  p-4">
                         <button
                           title="Ambil Antrean"
-                          onClick={() => handleOpenQueue(p)}
+                          onClick={() => handleOpenAntrean(p)}
                           className="inline-flex items-center p-2 bg-orange-400 text-white text-xs font-bold rounded-lg hover:bg-orange-500 transition shadow-sm cursor-pointer"
                         >
                           <ClipboardList size={14} />
@@ -326,11 +357,14 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
       </div>
 
       {/* Modal Pengambilan Antrean */}
+      {/* 
       {showQueueModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <form onSubmit={handleConfirmAntrean}>
           <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
             {!queueNumber ? (
               <>
+              
                 <div className="p-6 text-center border-b border-slate-100">
                   <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClipboardList size={32} />
@@ -344,33 +378,20 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                   <p className="font-bold text-emerald-700 mt-1">
                     {selectedPatient?.name}
                   </p>
+                  <div className="hidden">
+
+                  
+                  <span>${selectedPatient?.id}</span>
+                   <span>${selectedPatient?.gender}</span>
+                   </div>
                 </div>
+               
                 <div className="p-6 space-y-4">
                   <div className="space-y-2">
                     <label className="block text-xs font-bold text-slate-400 uppercase">
                       Pilih Poli Klinik
                     </label>
-                    <div className="grid grid-cols-1 gap-2">
-                      {["Umum", "Gigi", "KIA"].map((poli) => (
-                        <button
-                          key={poli}
-                          onClick={() => setSelectedPoli(poli)}
-                          className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex justify-between items-center ${
-                            selectedPoli === poli
-                              ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                              : "border-slate-100 hover:border-slate-200 text-slate-600"
-                          }`}
-                        >
-                          <span className="font-bold">{poli}</span>
-                          {selectedPoli === poli && (
-                            <CheckCircle2
-                              className="text-emerald-500"
-                              size={20}
-                            />
-                          )}
-                        </button>
-                      ))}
-                    </div>
+                    
                   </div>
                   <div className="flex gap-3 pt-4">
                     <button
@@ -380,8 +401,8 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                       Batal
                     </button>
                     <button
-                      disabled={!selectedPoli}
-                      onClick={handleProcessQueue}
+                      
+                     type="submit"
                       className="flex-[2] py-3 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 disabled:opacity-50 shadow-lg shadow-emerald-200"
                     >
                       Konfirmasi Antrean
@@ -440,6 +461,50 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
               </div>
             )}
           </div>
+         </form>
+        </div>
+      )}
+*/}
+      {showQueueModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (selectedPatient) {
+                await handleEditBtn(selectedPatient.id);
+                console.log(selectedPatient);
+              }
+            }}
+          >
+            <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
+              <div className="p-6 text-center border-b border-slate-100">
+                <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ClipboardList size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800">
+                  Pendaftaran Berobat
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Silakan pilih poli tujuan untuk pasien:
+                </p>
+
+                <input
+                  type="text"
+                  name="name"
+                  value={selectedPatient?.name}
+                  onChange={handleChange}
+                  className="font-bold text-emerald-700 mt-1 text-center outline-none"
+                  readOnly
+                />
+              </div>
+            </div>
+           <input
+        type="radio"
+        name="poli"
+        
+        className="hidden"
+      />
+          </form>
         </div>
       )}
 

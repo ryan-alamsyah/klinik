@@ -50,19 +50,27 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
     alamat: "",
     gender: "",
   });
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
+    const {name, value } = e.target;
+{/* 
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-    if(form.nik.length < 16 ) {
-      setIsError("");
-   
+    */}
+    setForm((prev) => ({...prev, [name]: value}))
+    
+    if(name === "nik" ) {
+      const len = value.length;
+   if (len > 16) {
+      setIsError("Lebih 1 karakter");
+    } else if (len === 16) {
+      setIsError("ok");
     } else {
-        setIsError("NIK lebih dari 16 karakter");
+      setIsError(false);
     }
+  }
+    
   };
  
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,7 +97,6 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
         setShowAddForm(false);
       }, 2000);
 
-
       setForm({
         name: "",
         nik: "",
@@ -114,7 +121,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
 
   return (
     <>
-    {/*
+      {/*
      <Snackbar
             open={openSuccess}
             autoHideDuration={3000}
@@ -131,10 +138,10 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
             </Alert>
           </Snackbar>
            */}
-           <Toast
-                  {...notification}
-                  onClose={() => setNotification({ ...notification, open: false })}
-                />
+      <Toast
+        {...notification}
+        onClose={() => setNotification({ ...notification, open: false })}
+      />
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
         <div className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-end gap-6">
@@ -158,7 +165,9 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => setShowAddForm(!showAddForm)}
+                onClick={() => {setShowAddForm(!showAddForm)
+                  setIsError(false);
+                }}
                 className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-sm ${
                   showAddForm
                     ? "bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer"
@@ -174,157 +183,186 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
       </div>
 
       {showAddForm && (
-        <form onSubmit={handleSubmit}>
-          <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
-            <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
-              <h2 className="text-emerald-800 font-bold flex items-center gap-2">
-                <UserPlus size={18} /> Formulir Registrasi Pasien Baru
-              </h2>
-              <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold uppercase tracking-wider">
-                Lengkapi Data
-              </span>
-            </div>
-            <div className="p-6 md:p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                      Nama Lengkap Pasien *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                      Nomor Induk Kependudukan (NIK) *
-                    </label>
-                    <input
-                      type="number"
-                      name="nik"
-                      value={form.nik}
-                      onChange={handleChange}
-                      placeholder="16 Digit NIK"
-                      className={`w-full p-2.5 border rounded-lg 
-                        ${isErorr ? "border-red-700 focus:ring-red-500 outline-none" : "border-slate-200 focus:ring-emerald-500 outline-none"}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="max-w-196">
+            <form onSubmit={handleSubmit}>
+              <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
+                <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
+                  <h2 className="text-emerald-800 font-bold flex items-center gap-2">
+                    <UserPlus size={18} /> Formulir Registrasi Pasien Baru
+                  </h2>
+                  <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold uppercase tracking-wider">
+                    Lengkapi Data
+                  </span>
+                </div>
+                <div className="p-6 md:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Nama Lengkap Pasien *
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={form.name}
+                          onChange={handleChange}
+                          required
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Nomor Induk Kependudukan (NIK) *
+                        </label>
+                        <input
+                          type="number"
+                          name="nik"
+                          value={form.nik}
+                          onChange={handleChange}
+                          placeholder="16 Digit NIK"
+                          className={`w-full p-2.5 border rounded-lg 
+                        ${
+                          isErorr === "ok"
+                            ? "border-emerald-500 border-2 outline-none"
+                            : "border-slate-200 focus:ring-emerald-500 outline-none"
+                        }
                         `}
-                    /> <span className={`${isErorr ? "text-red-600 block text-xs" : "hidden"}`}>{isErorr}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Tempat Lahir
-                      </label>
-                      <input
-                        type="text"
-                        name="tempatLahir"
-                        value={form.tempatLahir}
-                        onChange={handleChange}
-                        className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                      />
+                        />{" "}
+                        <span
+                          className={`${
+                            isErorr === "ok" ? "text-emerald-600 block text-xs" : "text-red-600 text-xs"
+                          }`}
+                        >
+                          {isErorr && (isErorr === 'ok' ? "✓ NIK Valid" : isErorr)}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                            Tempat Lahir
+                          </label>
+                          <input
+                            type="text"
+                            name="tempatLahir"
+                            value={form.tempatLahir}
+                            onChange={handleChange}
+                            className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                            Tanggal Lahir
+                          </label>
+                          <input
+                            type="date"
+                            name="tglLahir"
+                            value={form.tglLahir}
+                            onChange={handleChange}
+                            className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Tanggal Lahir
-                      </label>
-                      <input
-                        type="date"
-                        name="tglLahir"
-                        value={form.tglLahir}
-                        onChange={handleChange}
-                        className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                      Jenis Kelamin
-                    </label>
-                    <div className="flex gap-4 mt-2">
-                      <label className="flex items-center gap-2 cursor-pointer">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Jenis Kelamin
+                        </label>
+                        <div className="flex gap-4 mt-2">
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="Laki-laki"
+                              onChange={handleChange}
+                              className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-sm">Laki-laki</span>
+                          </label>
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="Perempuan"
+                              onChange={handleChange}
+                              className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-sm">Perempuan</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Nomor Handphone/WhatsApp *
+                        </label>
                         <input
-                          type="radio"
-                          name="gender"
-                          value="Laki-laki"
+                          type="text"
+                          name="tlp"
+                          value={form.tlp}
                           onChange={handleChange}
-                          className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                          placeholder="08xxxxxxxx"
                         />
-                        <span className="text-sm">Laki-laki</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="Perempuan"
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Alamat Lengkap
+                        </label>
+                        <textarea
+                          name="alamat"
+                          value={form.alamat}
                           onChange={handleChange}
-                          className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
-                        />
-                        <span className="text-sm">Perempuan</span>
-                      </label>
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-27"
+                          placeholder="Nama jalan, RT/RW, Kecamatan..."
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                      Nomor Handphone/WhatsApp *
-                    </label>
-                    <input
-                      type="text"
-                      name="tlp"
-                      value={form.tlp}
-                      onChange={handleChange}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                      placeholder="08xxxxxxxx"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                      Alamat Lengkap
-                    </label>
-                    <textarea
-                     
-                      name="alamat"
-                      value={form.alamat}
-                     onChange={handleChange}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-27"
-                      placeholder="Nama jalan, RT/RW, Kecamatan..."
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-8 flex justify-end gap-3">
-                <div className="flex justify-center mt-4 relative">
-                <button
-                  onClick={() => setShowAddForm(false)}
-                  className="flex items-center justify-center gap-2 px-4 py-2 rounded text-slate-600 border-slate-500 hover:bg-red-400 hover:text-white transition border cursor-pointer"
-                >
-                  Batal
-                </button>
-                  </div>
-                 <div className="flex justify-center mt-4 relative">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded text-white
+                  <div className="mt-8 flex justify-end gap-3">
+                    <div className="flex justify-center mt-4 relative">
+                      <button
+                        onClick={() => {
+                          setShowAddForm(false);
+                           setIsError(false);
+                          setForm({
+                            name: "",
+                            nik: "",
+                            tlp: "",
+                            tempatLahir: "",
+                            tglLahir: "",
+                            alamat: "",
+                            gender: "",
+                          });
+                        }}
+                        className="flex items-center justify-center gap-2 px-4 py-2 rounded text-slate-600 border-slate-500 hover:bg-red-400 hover:text-white transition border cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                    <div className="flex justify-center mt-4 relative">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`flex items-center justify-center gap-2 px-4 py-2 rounded text-white
                   ${
-                    isSubmitting ? "bg-gray-400" : "bg-emerald-500 hover:bg-emerald-700 cursor-pointer"
-                  } `}>
-                    {isSubmitting && (
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    )}
-                  {isSubmitting ? "Menyimpan..." : "Simpan"}
-                </button>
+                    isSubmitting
+                      ? "bg-gray-400"
+                      : "bg-emerald-500 hover:bg-emerald-700 cursor-pointer"
+                  } `}
+                      >
+                        {isSubmitting && (
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        )}
+                        {isSubmitting ? "Menyimpan..." : "Simpan"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
-        </form>
+        </div>
       )}
     </>
   );
