@@ -11,8 +11,8 @@ const MenuFarmasi = () => {
 
 const [isVisibleFarmasi, setIsVisibleFarmasi] = useState(false);
       const subMenuClassFarmasi = isVisibleFarmasi
-    ? "visiblePasien"
-    : "hiddenPasien";
+    ? "visibleFarmasi"
+    : "hiddenFarmasi";
 
 
     const handleMenuFarmasi = () => {

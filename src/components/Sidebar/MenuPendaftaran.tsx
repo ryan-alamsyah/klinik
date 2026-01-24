@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaAddressBook } from "react-icons/fa";
+import { FaAddressBook } from "react-icons/fa"; 
 import { IoIosArrowBack } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import Swal from "sweetalert2";
@@ -63,7 +63,7 @@ const MenuPendaftaran = () => {
             <span className="text-sm">Monitor Antrean</span>
           </div>
         </Link>
-        <Link to="/list-pasien" className={subMenuClassPendaftaran}>
+        <Link to="/list-antrean-pasien" className={subMenuClassPendaftaran}>
           <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
             <span className="text-sm">Jadwal Dokter</span>

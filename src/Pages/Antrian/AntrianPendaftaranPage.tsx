@@ -1,16 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import heroSvg from "../../assets/hero.svg";
+import { axiosInstance } from "../../components/lib/axios";
 import { TbBackground } from "react-icons/tb";
+import { useAntreanPasien } from "../../components/api/useAntreanPasein";
+
+
+
 
 const AntrianPendaftaranPage = () => {
-  const [nama, setNama] = useState("UTSMAN BIN AFFAN");
-  const [nomor, setNomor] = useState("A 2 0 1");
+   interface AntreanPasien {
+    id?: string;
+    pasienId: string;
+    name: string;
+    poli?: string;
+    gender: string;
+    nomorAntrean: string;
+    selectedPoli: string;
+    status?: string;
+  }
 
-  const namaPasien = "RYAN ALAMSYAH MANGUNsssJAYA HADININGRAT ";
-  const [loket, setLoket] = useState("TRIASE");
+  const [listAntrean, setListAntrean] = useState<AntreanPasien[]>([]);  
+  const [loading, setLoading] = useState(false);
+  
+  const fetchAntreanPasien = async () => {  
+
+  try {
+    setLoading(true);
+    const res = await axiosInstance.get("/antrean");
+    setListAntrean(res.data);
+
+  } finally {
+      setLoading(false);
+    }
+ };
+
+
+ useEffect(() => {
+    fetchAntreanPasien();
+ }, [])
+  
   const handlePanggil = () => {
     const utterance = new SpeechSynthesisUtterance(
-      `Nomor antrian ${nomor}, atas nama ${nama}, silahkan ke ${loket}`
+      `Nomor antrian ${listAntrean.nomorAntrean}, atas nama ${listAntrean.name}`
     );
     utterance.lang = "id-ID";
     window.speechSynthesis.speak(utterance);
@@ -20,26 +51,29 @@ const AntrianPendaftaranPage = () => {
   };
   return (
     <>
-      <div></div>
+
       <div className="flex  gap-4 items-center py-4">
         <div className="h-56 lg:w-96 relative shadow-xl/30 rounded-lg">
           <div className="border-b-2 border-black py-2">
             <h1 className="flex justify-center mb-2 text-slate-500">
               Nomor Antrean Anda
             </h1>
+            {listAntrean.map((p) => (
+              <span key={p.id}><span></span>{p.nomorAntrean}</span>
+            ))}
             <p className="2xl:text-5xl text-2xl font-black tracking-tighter flex justify-center">
-              {nomor}
+              
             </p>
           </div>
           <div className="flex justify-center flex-col  ">
             <h1 className="flex justify-center text-slate-500 text-sm">
-              NAMA PESERTA
+             
             </h1>
-            <p className="font-bold flex justify-center py-2">{nama}</p>
-          </div>
+            
+          </div>  
           <div>
             <p className="flex justify-center text-slate-500">Tujuan</p>
-            <p className="flex justify-center font-bold text-xl">{loket}</p>
+          {/*   <p className="flex justify-center font-bold text-xl">{listAntrean.loket}</p>*/}
           </div>
         </div>
 

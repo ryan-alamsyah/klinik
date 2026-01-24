@@ -6,30 +6,35 @@ import { Search, UserPlus, X } from "lucide-react";
 import type { AlertColor } from "@mui/material";
 import Toast from "../../components/Ui/Toast";
 
-
 type Props = {
   fetchPasiens: () => Promise<void>;
   searchQuery: string;
- setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) => {
-    // 1. Definisikan state notifikasi
-    const [notification, setNotification] = useState({
-      open: false,
-      message: "",
-      severity: "success" as AlertColor,
-    });
-  
-    // 2. Fungsi helper untuk memicu toast
-    const showToast = (message: string, severity: AlertColor = "success") => {
-      setNotification({ open: true, message, severity });
-    };
+const FormPasienCstm = ({
+  fetchPasiens,
+  searchQuery,
+  setSearchQuery,
+}: Props) => {
+  // 1. Definisikan state notifikasi
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "success" as AlertColor,
+  });
+
+  // 2. Fungsi helper untuk memicu toast
+  const showToast = (message: string, severity: AlertColor = "success") => {
+    setNotification({ open: true, message, severity });
+  };
 
   const [showAddForm, setShowAddForm] = useState(false);
-   const [openSuccess, setOpenSuccess] = useState<boolean>(false);
-   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-   const [isErorr, setIsError] = useState<boolean | string>(false);
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isNikErorr, setIsNikErorr] = useState<boolean | string>(false);
+  const [isInputErorr, setIsInputErorr] = useState<boolean | string>(false);
+  const today = new Date().toISOString().split("T")[0];
 
   interface Pasien {
     name: string;
@@ -42,7 +47,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
   }
 
   const [form, setForm] = useState<Pasien>({
-    name   : "",
+    name: "",
     nik: "",
     tlp: "",
     tempatLahir: "",
@@ -50,74 +55,87 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
     alamat: "",
     gender: "",
   });
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
-    const {name, value } = e.target;
-{/* 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    {
+      /* 
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-    */}
-    setForm((prev) => ({...prev, [name]: value}))
-    
-    if(name === "nik" ) {
-      const len = value.length;
-   if (len > 16) {
-      setIsError("Lebih 1 karakter");
-    } else if (len === 16) {
-      setIsError("ok");
-    } else {
-      setIsError(false);
+    */
     }
-  }
-    
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setIsInputErorr(false);
+
+    if (name === "nik") {
+      const len = value.length;
+      if (len > 16) {
+        setIsNikErorr("Lebih 1 karakter");
+      } else if (len === 16) {
+        setIsNikErorr("ok");
+      } else {
+        setIsNikErorr(false);
+      }
+    }
   };
- 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
       ...form,
     };
-    if(form.nik.length < 16) {
-   setIsError("*NIK harus berupa 16 digit angka lengkap.");
-   setIsSubmitting(false);
-     showToast("Input tidak boleh kosong!", "error");
-   return
-    } if(form.nik.length > 16) {
-      setIsError("NIK Lebih dari 16");
+    
+    if (form.name.trim() === "" || form.tlp.trim() === "") {
+      setIsInputErorr("Tidak Boleh Kosong");
     } else {
-       setIsSubmitting(true);
-       try {
-      await axiosInstance.post("/pasien", payload);
-
-      setTimeout(() => {
-        fetchPasiens();
-        {/*  setOpenSuccess(true); */}
-       showToast("Data berhasil disimpan!", "success");
-        setShowAddForm(false);
-      }, 2000);
-
-      setForm({
-        name: "",
-        nik: "",
-        tlp: "",
-        tempatLahir: "",
-        tglLahir: "",
-        alamat: "",
-        gender: "",
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 2000);
-    }
+      setIsInputErorr(false);
     }
     
+    if (form.nik.length < 16) {
+      setIsNikErorr("*NIK harus berupa 16 digit angka lengkap.");
+      setIsSubmitting(false);
+      showToast("Input tidak boleh kosong!", "error");
+      return;
+    }
+    if (form.nik.length > 16) {
+      setIsNikErorr("NIK Lebih dari 16");
+    } else {
+      setIsSubmitting(true);
+
+      try {
+        await axiosInstance.post("/pasien", payload);
+
+        setTimeout(() => {
+          fetchPasiens();
+          {
+            /*  setOpenSuccess(true); */
+          }
+          showToast("Data berhasil disimpan!", "success");
+          setShowAddForm(false);
+        }, 2000);
+
+        setForm({
+          name: "",
+          nik: "",
+          tlp: "",
+          tempatLahir: "",
+          tglLahir: "",
+          alamat: "",
+          gender: "",
+        });
+      } catch (error) {
+        showToast("Gagal menyimpan data pasien.", "error");
+        console.error(error);
+      } finally {
+        setTimeout(() => {
+          setIsSubmitting(false);
+        }, 2000);
+      }
+    }
   };
-
-
 
   return (
     <>
@@ -165,8 +183,9 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => {setShowAddForm(!showAddForm)
-                  setIsError(false);
+                onClick={() => {
+                  setShowAddForm(!showAddForm);
+                  setIsNikErorr(false);
                 }}
                 className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-sm ${
                   showAddForm
@@ -207,9 +226,27 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                           name="name"
                           value={form.name}
                           onChange={handleChange}
-                          required
-                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                        />
+                          placeholder="Nama Lengkap"
+                          className={`w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none
+                        ${
+                          isInputErorr === "ok"
+                            ? "border-emerald-500 border-2 outline-none"
+                            : "border-slate-200 focus:ring-emerald-500 outline-none"
+                        }
+                        `}
+                        />{" "}
+                        <span
+                          className={`${
+                            isInputErorr === "ok"
+                              ? "text-emerald-600 block text-xs"
+                              : "text-red-600 text-xs"
+                          }`}
+                        >
+                          {isInputErorr &&
+                            (isInputErorr === "ok"
+                              ? "✓ Nama Valid"
+                              : isInputErorr)}
+                        </span>
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -223,7 +260,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                           placeholder="16 Digit NIK"
                           className={`w-full p-2.5 border rounded-lg 
                         ${
-                          isErorr === "ok"
+                          isNikErorr === "ok"
                             ? "border-emerald-500 border-2 outline-none"
                             : "border-slate-200 focus:ring-emerald-500 outline-none"
                         }
@@ -231,10 +268,13 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                         />{" "}
                         <span
                           className={`${
-                            isErorr === "ok" ? "text-emerald-600 block text-xs" : "text-red-600 text-xs"
+                            isNikErorr === "ok"
+                              ? "text-emerald-600 block text-xs"
+                              : "text-red-600 text-xs"
                           }`}
                         >
-                          {isErorr && (isErorr === 'ok' ? "✓ NIK Valid" : isErorr)}
+                          {isNikErorr &&
+                            (isNikErorr === "ok" ? "✓ NIK Valid" : isNikErorr)}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -259,6 +299,8 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                             name="tglLahir"
                             value={form.tglLahir}
                             onChange={handleChange}
+                            required
+                            max={today}
                             className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                           />
                         </div>
@@ -276,6 +318,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                               name="gender"
                               value="Laki-laki"
                               onChange={handleChange}
+                              required
                               className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-sm">Laki-laki</span>
@@ -286,6 +329,7 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                               name="gender"
                               value="Perempuan"
                               onChange={handleChange}
+                              required
                               className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-sm">Perempuan</span>
@@ -297,13 +341,31 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                           Nomor Handphone/WhatsApp *
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           name="tlp"
                           value={form.tlp}
                           onChange={handleChange}
-                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                          placeholder="08xxxxxxxx"
-                        />
+                          placeholder="08XXXXX"
+                          className={`w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none
+                        ${
+                          isInputErorr === "ok"
+                            ? "border-emerald-500 border-2 outline-none"
+                            : "border-slate-200 focus:ring-emerald-500 outline-none"
+                        }
+                        `}
+                        />{" "}
+                        <span
+                          className={`${
+                            isInputErorr === "ok"
+                              ? "text-emerald-600 block text-xs"
+                              : "text-red-600 text-xs"
+                          }`}
+                        >
+                          {isInputErorr &&
+                            (isInputErorr === "ok"
+                              ? "✓ Tlp Valid"
+                              : isInputErorr)}
+                        </span>
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -324,7 +386,8 @@ const FormPasienCstm = ({ fetchPasiens, searchQuery, setSearchQuery }: Props) =>
                       <button
                         onClick={() => {
                           setShowAddForm(false);
-                           setIsError(false);
+                          setIsNikErorr(false);
+                          setIsInputErorr(false);
                           setForm({
                             name: "",
                             nik: "",

@@ -10,8 +10,8 @@ const MenuKeuangan = () => {
   const [isVisibleKeuangan, setIsVisibleKeuangan] = useState(false);
 
   const subMenuClassKeuangan = isVisibleKeuangan
-    ? "visiblePasien"
-    : "hiddenPasien";
+    ? "visibleKeuangan"
+    : "hiddenKeuangan";
 
   const handleMenuKeuangan = () => {
     setIsVisibleKeuangan(!isVisibleKeuangan);

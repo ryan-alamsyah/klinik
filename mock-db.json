@@ -1,27 +1,73 @@
 {
   "pasien": [
     {
-      "id": "233e",
-      "name": "ryan alamsyah",
-      "nik": "1232131231232132",
-      "tlp": "",
-      "tempatLahir": "DEPOK",
-      "tglLahir": "",
-      "alamat": "",
+      "id": "286d",
+      "name": "Ryan Alamsyah",
+      "nik": "8238646812341276",
+      "tlp": "0826141235",
+      "tempatLahir": "JAKARTA",
+      "tglLahir": "2026-01-24",
+      "alamat": "puri harmoni 9 extension",
       "gender": "Laki-laki"
     },
     {
-      "id": "e4c5",
-      "name": "NAFISHA KAYLA",
-      "nik": "7299412987124978",
-      "tlp": "0826141235",
-      "tempatLahir": "Bogorr",
-      "tglLahir": "",
+      "id": "a320",
+      "name": "nafisha",
+      "nik": "3333234234325235",
+      "tlp": "79327813",
+      "tempatLahir": "",
+      "tglLahir": "2026-01-24",
       "alamat": "",
-      "gender": "Perempuan"
+      "gender": "Laki-laki"
     }
   ],
-  "antrean": [],
+  "antrean": [
+    {
+      "id": "5027",
+      "pasienId": "286d",
+      "nomorAntrean": "A-1",
+      "name": "Ryan Alamsyah",
+      "gender": "Laki-laki",
+      "selectedPoli": "Umum",
+      "status": "Tunggu"
+    },
+    {
+      "id": "341a",
+      "pasienId": "a320",
+      "nomorAntrean": "A-2",
+      "name": "nafisha",
+      "gender": "Laki-laki",
+      "selectedPoli": "Umum",
+      "status": "Resep"
+    },
+    {
+      "id": "9dcb",
+      "pasienId": "286d",
+      "nomorAntrean": "C-1",
+      "name": "Ryan Alamsyah",
+      "gender": "Laki-laki",
+      "selectedPoli": "KIA",
+      "status": "Tunggu"
+    },
+    {
+      "id": "6bef",
+      "pasienId": "a320",
+      "nomorAntrean": "B-1",
+      "name": "nafisha",
+      "gender": "Laki-laki",
+      "selectedPoli": "Gigi",
+      "status": "Tunggu"
+    },
+    {
+      "id": "db54",
+      "pasienId": "a320",
+      "nomorAntrean": "B-2",
+      "name": "nafisha",
+      "gender": "Laki-laki",
+      "selectedPoli": "Gigi",
+      "status": "Tunggu"
+    }
+  ],
   "dokter": [],
   "obat": []
 }

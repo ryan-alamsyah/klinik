@@ -5,7 +5,12 @@ import { axiosInstance } from "../lib/axios"
 interface AntreanPasien {
     id: string;
     pasienId: string;
+    nomorAntrean: string
     name: string;
+    gender: string;
+    selectedPoli: string;
+    status?: string;
+    
 }
 
 

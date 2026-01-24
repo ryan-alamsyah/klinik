@@ -6,6 +6,7 @@ import {
   RefreshCw,
   Trash2,
   Pencil,
+  X,
 } from "lucide-react";
 import { useDeletePasien } from "../../components/api/useDeletePasein";
 import { useEditPasien } from "../../components/api/useEditPasien";
@@ -43,7 +44,8 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Pasien | null>(null);
   const [selectedPoli, setSelectedPoli] = useState("");
-  const [queueNumber, setQueueNumber] = useState<string | null>(null);
+  const [queueNumber, setQueueNumber] = useState<string>("");
+  const [showNomorAntrean, setShowNomorAntrean] = useState(false);
 
   const { deletePasien } = useDeletePasien();
   const { editPasien } = useEditPasien();
@@ -59,12 +61,14 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     gender: string;
   }
   interface AntreanPasien {
-    id: string;
+    id?: string;
     pasienId: string;
-    noAntrean: string;
     name: string;
-    poli: string;
+    poli?: string;
     gender: string;
+    nomorAntrean: string;
+    selectedPoli: string;
+    status?: string;
   }
 
   const [form, setForm] = useState<Pasien>({
@@ -78,12 +82,12 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     gender: "",
   });
   const [formAntrean, setFormAntrean] = useState<AntreanPasien>({
-    id: "",
     pasienId: "",
-    noAntrean: "",
+    nomorAntrean: "",
     name: "",
-    poli: "",
     gender: "",
+    selectedPoli: "",
+    status: "Tunggu",
   });
 
   // 1. Definisikan state notifikasi
@@ -156,6 +160,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
 
       setOpenSuccess(true);
     } catch (error) {
+      showToast("Gagal memuat data pasien.", "error");
       console.error(error);
     } finally {
       setIsSpinner(false); // spinner pasti berhenti
@@ -192,25 +197,55 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     } 
   };
 */
+
+    useEffect(() => {
+      if (selectedPatient) {
+        setFormAntrean({
+          ...formAntrean,
+          name: selectedPatient.name,
+          gender: selectedPatient.gender,
+          pasienId: selectedPatient.id,
+          status: "Tunggu",
+        });
+      }
+    }, [selectedPatient]);
   }
   const handleConfirmAntrean = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedPoli) return;
-    const randomNum = Math.floor(Math.random() * 50) + 1;
-    const code =
-      selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
-    setQueueNumber(`${code}-${randomNum}`);
-    const payload = {
-      ...formAntrean,
-      code,
-    };
-
     try {
+      const res = await axiosInstance.get<AntreanPasien[]>(
+        "/antrean");
+        const allAntrean = res.data;
+
+      if (!selectedPoli) return;
+   
+      
+      const antreanPoli = allAntrean.filter((a) => a.selectedPoli === selectedPoli);
+    
+    
+      const nextNumber = antreanPoli.length + 1;
+      const code =
+selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
+
+      const newQueueNumber = `${code}-${nextNumber}`;
+      setQueueNumber(newQueueNumber);
+      const payload = {
+        ...formAntrean,
+        selectedPoli,
+        nomorAntrean: newQueueNumber,
+        status: "Tunggu",
+      };
+
       await axiosInstance.post("/antrean", payload);
     } catch (error) {
       console.log(error);
     }
+    setShowQueueModal(false);
+    showToast("Antrean Berhasil Dibuat!", "success");
+    setSelectedPoli("");
+    setShowNomorAntrean(true);
+    setCurrentDateTime(new Date());
   };
 
   const handleChange = (
@@ -236,7 +271,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     setShowQueueModal(false);
     setSelectedPatient(null);
     setSelectedPoli("");
-    setQueueNumber(null);
+    setQueueNumber("");
   };
 
   return (
@@ -291,6 +326,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
               <tr className="text-xs uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
                 <th className="px-6 py-4 font-bold">Identitas Pasien</th>
                 <th className="px-6 py-4 font-bold">NIK</th>
+                <th className="px-6 py-4 font-bold">Tlp</th>
                 <th className="px-6 py-4 font-bold">Alamat</th>
                 <th className="px-6 py-4 font-bold text-center">Aksi</th>
               </tr>
@@ -311,6 +347,9 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
                       </td>
                       <td className="px-6 py-4  text-sm text-slate-600">
                         {p.nik}
+                      </td>
+                      <td className="px-6 py-4  text-sm text-slate-600">
+                        {p.tlp}
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-500 ">
                         {p.alamat}
@@ -467,47 +506,122 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
 */}
       {showQueueModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              if (selectedPatient) {
-                await handleEditBtn(selectedPatient.id);
-                console.log(selectedPatient);
-              }
-            }}
-          >
-            <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
-              <div className="p-6 text-center border-b border-slate-100">
-                <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ClipboardList size={32} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800">
-                  Pendaftaran Berobat
-                </h3>
-                <p className="text-sm text-slate-500">
-                  Silakan pilih poli tujuan untuk pasien:
-                </p>
+          <form onSubmit={handleConfirmAntrean}>
+            <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden pb-4 ">
+              <div className="flex justify-end p-2">
+                <button onClick={closeModalsAntrean}>
+                  <X className="text-red-300 cursor-pointer hover:text-red-500" />
+                </button>
+              </div>
+              <div className="px-6">
+                <div className="pt-2 px-6 pb-6 text-center border-b border-slate-100">
+                  <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ClipboardList size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800">
+                    Pendaftaran Berobat
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    Silakan pilih poli tujuan untuk pasien:
+                  </p>
 
-                <input
-                  type="text"
-                  name="name"
-                  value={selectedPatient?.name}
-                  onChange={handleChange}
-                  className="font-bold text-emerald-700 mt-1 text-center outline-none"
-                  readOnly
-                />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formAntrean.name}
+                    onChange={handleChange}
+                    className="font-bold text-emerald-700 mt-1 text-center outline-none"
+                    readOnly
+                  />
+                </div>
+                <div className="hidden">
+                  <input
+                    type="text"
+                    name="gender"
+                    value={formAntrean.gender}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  {["Umum", "Gigi", "KIA"].map((poli) => (
+                    <button
+                      type="button"
+                      key={poli}
+                      onClick={() => setSelectedPoli(poli)}
+                      className={`w-full p-4 rounded-2xl border-2 text-left transition-all flex justify-between items-center ${
+                        selectedPoli === poli
+                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
+                          : "border-slate-100 hover:border-slate-200 text-slate-600"
+                      }`}
+                    >
+                      <span className="font-bold">Poli {poli}</span>
+                      {selectedPoli === poli && (
+                        <CheckCircle2 className="text-emerald-500" size={20} />
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition mt-4 cursor-pointer"
+                >
+                  SUBMIT
+                </button>
               </div>
             </div>
-           <input
-        type="radio"
-        name="poli"
-        
-        className="hidden"
-      />
           </form>
         </div>
       )}
 
+      {/* Modal Nomor Antrean Pasien */}
+      {showNomorAntrean && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="p-8 text-center bg-white relative rounded-2xl">
+            <div className="absolute top-4 right-4 text-slate-300">
+              <Printer size={20} />
+            </div>
+            <CheckCircle2 className="text-emerald-500 mx-auto mb-4" size={56} />
+            <h3 className="text-2xl font-bold text-slate-800 mb-1">
+              Berhasil!
+            </h3>
+            
+
+            <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-6 mb-6">
+              <div className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">
+                Nomor Antrean
+              </div>
+              <div className="text-6xl font-black text-emerald-700 mb-2">
+                {queueNumber}
+              </div>
+              <div className="text-sm font-bold text-slate-700 uppercase">
+                POLI {selectedPoli.toUpperCase()}
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-200 space-y-1">
+                <div className="text-[10px] text-slate-400 font-mono flex justify-between px-4">
+                  <span>NAMA:</span>
+                  <span className="text-slate-600">
+                    {selectedPatient?.name}
+                  </span>
+                </div>
+                <div className="text-[10px] text-slate-400 font-mono flex justify-between px-4">
+                  <span>WAKTU:</span>
+                  <span className="text-slate-600">
+                    {currentDateTime.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowNomorAntrean(false)}
+              className="w-full py-4 bg-emerald-600 text-white font-bold rounded-2xl hover:bg-emerald-700 transition"
+            >
+              Selesai & Tutup
+            </button>
+          </div>
+        </div>
+      )}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <form

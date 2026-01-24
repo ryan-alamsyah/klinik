@@ -29,15 +29,17 @@ export const PasienPage = () => {
     }
   };
 
+  useEffect(() => { 
+    fetchPasiens();
+  }, []);
+
   const filteredPatients = pasiens.filter(
     (p) =>
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.nik.includes(searchQuery)
   );
 
-  useEffect(() => {
-    fetchPasiens();
-  }, []);
+
 
   return (
     <>

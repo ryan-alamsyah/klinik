@@ -6,6 +6,8 @@ import AntrianPendaftaranPage from "./Pages/Antrian/AntrianPendaftaranPage";
 import DataPasienPage from "./Pages/Pasien/DataPasienPage";
 import TombolAntrean from "./Pages/Antrian/TombolAntrian";
 import { PasienPage } from "./Pages/Pasien/PasienPage";
+import ListAntreanPasien from "./Pages/Antrian/ListAntreanPasien";
+
 
 function App() {
   return (
@@ -15,8 +17,9 @@ function App() {
 
           <Route index element={<DashboardPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/nomor-antrean" element={<AntrianPendaftaranPage />} />
+          <Route path="/nomor-antrean" element={<ListAntreanPasien />} />
           <Route path="/data-pasien" element={<PasienPage />} />
+          <Route path="/list-antrean-pasien" element={<ListAntreanPasien />} />
           
         </Route>
       </Routes>

@@ -7,14 +7,12 @@ import { GoDotFill } from "react-icons/go";
 
 
 const MenuPasien = () => {
-  const [isVisiblePasien, setIsVisiblePasien] = useState(false);
-  const subMenuClassPasien = isVisiblePasien
-    ? "visiblePasien"
-    : "hiddenPasien";
-
-
-    const handleMenuPasien = () => {
-    setIsVisiblePasien(!isVisiblePasien);
+  const [isVisibleDokter, setIsVisibleDokter] = useState(false);
+  const subMenuClassDokter = isVisibleDokter
+    ? "visibleDokter"
+    : "hiddenDokter";
+    const handleMenuDokter = () => {
+    setIsVisibleDokter(!isVisibleDokter);
     
   };
     
@@ -22,28 +20,28 @@ const MenuPasien = () => {
         <>
         <div className="flex flex-col justify-center">
                   <button
-                    onClick={handleMenuPasien}
+                    onClick={handleMenuDokter}
                     className="flex items-center gap-2 p-2 justify-between hover:bg-emerald-600 hover:duration-700   text-gray-500  rounded-xl hover:text-white  cursor-pointer"
                   ><div className="flex items-center gap-2">
          <FaUserGroup  />
-         <span className="text-sm">Data Pasien</span>
+         <span className="text-sm">Data Dokter</span>
                     
                   </div>
         
                    
                     <IoIosArrowBack className={`text-sm transition-transform duration-300 ${
-                  isVisiblePasien ? "-rotate-90" :"rotate-0" 
+                  isVisibleDokter ? "-rotate-90" :"rotate-0" 
                 }`}/>
-                  </button>
-                  <Link to="/list-pasien" className={subMenuClassPasien}>
-                    <div className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
-                      <GoDotFill />
-                      <span className="text-sm">Database Pasien</span>
-                      
-                    </div>
-                  </Link>
-                   <Link to="/list-pasien" className={subMenuClassPasien}>
-                    <div  className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
+              </button>
+              <Link to="/list-pasien" className={subMenuClassDokter}>
+                <div className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
+                  <GoDotFill />
+                  <span className="text-sm">Database Dokter</span>
+                  
+                </div>
+              </Link>
+               <Link to="/list-pasien" className={subMenuClassDokter}>
+                <div  className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                       <GoDotFill />
                       <span className="text-sm">Rekam Medis</span>
                      
