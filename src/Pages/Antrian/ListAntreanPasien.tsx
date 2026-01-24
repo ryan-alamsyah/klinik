@@ -3,11 +3,13 @@ import { RefreshCw,Pencil, Check , UserPlus} from "lucide-react";
 import Toast from "../../components/Ui/Toast";
 import type { AlertColor } from "@mui/material";
 import { axiosInstance } from "../../components/lib/axios";
+import { SearchField } from "../../components/Ui/SearchField";
 
 const ListAntreanPasien = () => {
   const [isSpinner, setIsSpinner] = useState(false);
   const [showUpdateAntrean, setShowUpdateAntrean] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   // 1. Definisikan state notifikasi
    const [notification, setNotification] = useState({
      open: false,
@@ -50,6 +52,11 @@ const ListAntreanPasien = () => {
   const updateAntren = () => {
     setShowUpdateAntrean(true);
   }
+   const filteredPatients = antreanPasien.filter(
+    (p) =>
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.status.toLowerCase().includes(searchQuery.toLowerCase())
+  );
    
   return (
     <>
@@ -57,6 +64,13 @@ const ListAntreanPasien = () => {
             {...notification}
             onClose={() => setNotification({ ...notification, open: false })}
           />
+          <div className="mb-6 flex justify-end">
+            <SearchField
+            label="Pencarian Antrean Pasien"
+            placeholder="Masukan Status Pasien"
+            searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          </div>
+          
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-y-scroll h-96 xl:h-152 ">
         <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <h2 className="font-bold text-slate-700">Data Antrean Pasien</h2>
@@ -84,8 +98,8 @@ const ListAntreanPasien = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {antreanPasien.length > 0 ? (
-                antreanPasien.map((p) => (
+              {filteredPatients.length > 0 ? (
+                filteredPatients.map((p) => (
                   <tr key={p.id} className="hover:bg-emerald-50/40 transition">
                     <td className="px-4 py-4">
                       <div className="font-bold text-slate-800">{p.name}</div>
@@ -151,6 +165,7 @@ const ListAntreanPasien = () => {
                   </td>
                 </tr>
               )}
+
             </tbody>
           </table>
         </div>
@@ -167,7 +182,7 @@ const ListAntreanPasien = () => {
                   <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
                     <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
                       <h2 className="text-emerald-800 font-bold flex items-center gap-2">
-                        <UserPlus size={18} /> Formulir Edit Pasien
+                        <UserPlus size={18} /> Formulir Rekam Medis
                       </h2>
                       <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold uppercase tracking-wider">
                         Lengkapi Data

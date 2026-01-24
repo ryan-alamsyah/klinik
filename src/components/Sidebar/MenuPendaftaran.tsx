@@ -66,7 +66,7 @@ const MenuPendaftaran = () => {
         <Link to="/list-antrean-pasien" className={subMenuClassPendaftaran}>
           <div className="hover:bg-emerald-600 hover:duration-700 w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
             <GoDotFill />
-            <span className="text-sm">Jadwal Dokter</span>
+            <span className="text-sm">Daftar Antrean</span>
           </div>
         </Link>
       </div>
