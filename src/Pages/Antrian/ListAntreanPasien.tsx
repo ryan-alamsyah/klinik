@@ -9,13 +9,13 @@ import { useAntreanPasien } from "../../components/api/useAntreanPasein";
 
 const ListAntreanPasien = () => {
   const [isSpinner, setIsSpinner] = useState(false);
-  const [showUpdateAntrean, setShowUpdateAntrean] = useState(false);
+  const [showUpdateAntrean, setShowUpdateAntrean] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
-  const { rekamMedis  } = useRekamMedisPasien();
-  const { antreanPasien  } = useAntreanPasien();
+  const { rekamMedis } = useRekamMedisPasien();
+  const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
   // 1. Definisikan state notifikasi
   const [notification, setNotification] = useState({
     open: false,
@@ -29,18 +29,48 @@ const ListAntreanPasien = () => {
     name: string;
     poli?: string;
     gender: string;
+    tglLahir: string;
     nomorAntrean: string;
     selectedPoli: string;
     status?: string;
   }
 
-  const [formMedisRecord, setFormMedisRecord] = useState({
+  interface IPemeriksaanFisik {
+  tensi: string;     
+  suhu: number | string; 
+  beratBadan: number | string;
+}
+
+  interface FormMedisRecord {
+    pasienId: string;
+    name: string;
+    tglLahir: string;
+    gender: string;
+    keluhan: string;
+    diagnosa: string;
+    tindakan: string;
+    obat: string;
+    tanggalKunjungan: string;
+    pemeriksaanFisik: IPemeriksaanFisik;
+    suratKeterangan: string;
+  }
+
+  const [formMedisRecord, setFormMedisRecord] = useState<FormMedisRecord>({
     pasienId: "",
     name: "",
+    tglLahir: "",
+    gender: "",
+    keluhan: "", 
     diagnosa: "",
     tindakan: "",
     obat: "",
     tanggalKunjungan: "",
+    pemeriksaanFisik: {
+      tensi: "",
+      suhu: "",
+      beratBadan: "",
+    },
+    suratKeterangan: "",
   });
 
   // 2. Fungsi helper untuk memicu toast
@@ -48,36 +78,36 @@ const ListAntreanPasien = () => {
     setNotification({ open: true, message, severity });
   };
 
-  const fetchAntreanPasien = async () => {
+  useEffect(() => {
+    fetchAntreanPasien();
+  }, []);
+
+  const handleRefresh = async () => {
     try {
       setIsSpinner(true);
-      const responses = await axiosInstance.get("/antrean");
-      setAntreanPasien(responses.data);
+      await fetchAntreanPasien();
+      showToast("Data antrean pasien berhasil diperbarui", "success");
     } catch (error) {
-      showToast("Gagal memperbarui data antrean pasien", "error");
       console.log(error);
     } finally {
       setIsSpinner(false);
     }
   };
-  useEffect(() => {
-    fetchAntreanPasien();
-  }, []);
-
-  const handleRefresh = () => {
-    fetchAntreanPasien();
-    showToast("Data antrean pasien diperbarui", "success");
-  };
 
   const updateAntren = (antreanPasien: AntreanPasien) => {
-    
-    
-    console.log(antreanPasien);
+    setShowUpdateAntrean(true);
+    setFormMedisRecord({
+      ...formMedisRecord,
+      pasienId: antreanPasien.pasienId,
+      name: antreanPasien.name,
+      tglLahir: antreanPasien.tglLahir,
+      gender: antreanPasien.gender,
+    });
   };
   const filteredPatients = antreanPasien.filter(
     (p) =>
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.status.toLowerCase().includes(searchQuery.toLowerCase()),
+      p.status?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,10 +122,19 @@ const ListAntreanPasien = () => {
       setFormMedisRecord({
         pasienId: "",
         name: "",
+        keluhan: "", 
         diagnosa: "",
         tindakan: "",
         obat: "",
         tanggalKunjungan: "",
+        tglLahir: "",
+        pemeriksaanFisik: {
+          tensi: "",
+          suhu: "",
+          beratBadan: "",
+        },
+        gender: "",
+        suratKeterangan: "",
       });
       showToast("Rekam medis pasien berhasil disimpan", "success");
       setIsSubmitting(false);
@@ -107,6 +146,29 @@ const ListAntreanPasien = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    const pemeriksaanFisikFields = ["tensi", "suhu", "beratBadan"];
+  
+    if (pemeriksaanFisikFields.includes(name)) {
+      setFormMedisRecord({
+        ...formMedisRecord,
+        pemeriksaanFisik: {
+          ...formMedisRecord.pemeriksaanFisik,
+          [name]: value,
+        },
+      });
+    } else {
+      setFormMedisRecord({
+        ...formMedisRecord,
+        [name]: value,
+      });
+    }
+    
   };
 
   return (
@@ -140,7 +202,7 @@ const ListAntreanPasien = () => {
             </button>
 
             <span className="text-xs font-medium text-slate-500">
-              Menampilkan {antreanPasien.length} Data
+              Menampilkan {filteredPatients.length} Data
             </span>
           </div>
         </div>
@@ -155,8 +217,8 @@ const ListAntreanPasien = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {antreanPasien.length > 0 ? (
-                antreanPasien.map((p) => (
+              {filteredPatients.length > 0 ? (
+                filteredPatients.map((p) => (
                   <tr key={p.id} className="hover:bg-emerald-50/40 transition">
                     <td className="px-4 py-4">
                       <div className="font-bold text-slate-800">{p.name}</div>
@@ -169,7 +231,9 @@ const ListAntreanPasien = () => {
                       <span className="flex gap-1 ju">
                         {["Tunggu", "Triase", "Dokter", "Resep"].map(
                           (stepName, index, array) => {
-                            const currentStepIndex = array.indexOf(p.status);
+                            const currentStepIndex = array.indexOf(
+                              p.status ? p.status : "Tunggu",
+                            );
 
                             // Tahap dianggap selesai jika indeksnya kurang dari atau sama dengan status pasien saat ini
                             const isCompleted = index <= currentStepIndex;
@@ -195,15 +259,15 @@ const ListAntreanPasien = () => {
                         )}
                       </span>
                     </td>
-                    <td className="px-6 py-4  text-sm text-slate-600">
+                    <td className="px-6 py-4  text-sm text-slate-600 ">
                       {p.selectedPoli}
                     </td>
 
-                    <td className="flex justify-center gap-1.5 items-center  p-4">
+                    <td className="flex justify-center gap-1.5 items-center mt-6">
                       <button
                         title="Update"
                         onClick={() => updateAntren(p)}
-                        className="inline-flex items-centerpx-4 p-2 bg-emerald-400 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 transition shadow-sm cursor-pointer"
+                        className="inline-flex items-center p-2 bg-emerald-400 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 transition shadow-sm cursor-pointer"
                       >
                         <Pencil size={14} />
                       </button>
@@ -228,7 +292,7 @@ const ListAntreanPasien = () => {
       {showUpdateAntrean && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <form onSubmit={handleSubmit}>
-            <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
+            <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
               <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
                 <h2 className="text-emerald-800 font-bold flex items-center gap-2">
                   <UserPlus size={18} /> Formulir Rekam Medis
@@ -253,19 +317,76 @@ const ListAntreanPasien = () => {
                         className="w-full p-2.5 border border-slate-200 rounded-lg outline-none"
                       />
                     </div>
-                    <div>
+                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Nomor Induk Kependudukan (NIK) *
+                        Keluhan *
                       </label>
                       <input
                         type="text"
-                        name="nik"
-                        value={formMedisRecord.pasienId}
-                        onChange={() => {}}
+                        name="keluhan"
+                        value={formMedisRecord.keluhan}
+                        onChange={handleChange}
+                        required
                         className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                        placeholder="16 Digit NIK"
+                        placeholder="Keluhan pasien"
                       />
                     </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                         Tensi
+                        </label>
+                        <input
+                          type="number"
+                          name="tensi"
+                          value={formMedisRecord.pemeriksaanFisik.tensi}
+                          onChange={handleChange}
+                          placeholder="120/80"
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        />
+                      </div>
+                      <div>
+                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                         Suhu
+                        </label>
+                        <input
+                          type="number"
+                          name="suhu"
+                          value={formMedisRecord.pemeriksaanFisik.suhu}
+                          onChange={handleChange}
+                          placeholder="36.5"
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        />
+                      </div>
+                      <div>
+                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                         Berat Badan
+                        </label>
+                        <input
+                          type="number"
+                          name="beratBadan"
+                          value={formMedisRecord.pemeriksaanFisik.beratBadan}
+                          onChange={handleChange}
+                          placeholder="10"
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                        Diagnosa *
+                      </label>
+                      <input
+                        type="text"
+                        name="diagnosa"
+                        value={formMedisRecord.diagnosa}
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        placeholder="Diagnosa penyakit pasien"
+                      />
+                    </div>
+                   
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -279,11 +400,12 @@ const ListAntreanPasien = () => {
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                          Tanggal Lahir
+                          Tanggal Kunjungan
                         </label>
                         <input
                           type="date"
                           name="tglLahir"
+                          value={formMedisRecord.tglLahir}
                           onChange={() => {}}
                           className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                         />
@@ -291,6 +413,8 @@ const ListAntreanPasien = () => {
                     </div>
                   </div>
                   <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-2">
+
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                         Jenis Kelamin
@@ -300,19 +424,75 @@ const ListAntreanPasien = () => {
                           <input
                             type="radio"
                             name="gender"
-                            value="Laki-laki"
+                            value={formMedisRecord.gender}
                             onChange={() => {}}
                             className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
                           />
-                          <span className="text-sm">Laki-laki</span>
+                          <span className="text-sm">{formMedisRecord.gender}</span>
                         </label>
                       </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Tanggal Lahir
+                        </label>
+                        <input
+                          type="date"
+                          name="tglLahir"
+                          value={formMedisRecord.tglLahir}
+                          onChange={handleChange}
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        />
+                      </div>
+                      </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                        Tindakan*
+                      </label>
+                      <input
+                        type="text"
+                        name="tindakan"
+                        value={formMedisRecord.tindakan}
+                        onChange={handleChange}
+                        placeholder="Tindakan medis yang diberikan"
+                        required
+                        className="w-full p-2.5 border border-slate-200 rounded-lg outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                        Obat *
+                      </label>
+                      <select
+                        name="obat"
+                        value={formMedisRecord.obat}
+                        onChange={handleChange}
+                        required
+                        className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                      >
+                        <option value="">Pilih Obat</option>
+                        {rekamMedis.map((obat, index) => (
+                          <option key={index} value={obat.obat}>
+                            {obat.obat}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-8 flex justify-end gap-3">
-                  <div className="flex justify-center mt-4 relative">
+                    
+                  <div className="flex justify-center mt-4  gap-4 relative">
+                     <div>
+                    <button
+                      type="button"
+                      onClick={() => setShowUpdateAntrean(false)}
+                      className="px-4 py-2 rounded text-slate-600 bg-slate-200 hover:bg-slate-300 transition"
+                    >
+                      Batal
+                    </button>
+                  </div>
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -329,6 +509,7 @@ const ListAntreanPasien = () => {
                       {isSubmitting ? "Menyimpan..." : "Simpan"}
                     </button>
                   </div>
+                 
                 </div>
               </div>
             </div>

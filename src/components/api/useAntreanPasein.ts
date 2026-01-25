@@ -10,17 +10,19 @@ interface AntreanPasien {
     gender: string;
     selectedPoli: string;
     status?: string;
+    tglLahir?: string;
     
 }
 
 
 export const useAntreanPasien = () => {
-    const [antreanPasien, setAntreanPasien ] = useState<AntreanPasien>();
+    const [antreanPasien, setAntreanPasien ] = useState<AntreanPasien[]>([]);
     const [pasienIsLoading, setPasienIsLoading] = useState(false);
+
     const fetchAntreanPasien =  async() => {
         try {
              setPasienIsLoading(true);
-         const responses = await axiosInstance.get("/antrean")
+         const responses = await axiosInstance.get<AntreanPasien[]>("/antrean")
             setAntreanPasien(responses.data)
         } catch (error) {
             console.log(error)

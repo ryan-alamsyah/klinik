@@ -66,6 +66,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     name: string;
     poli?: string;
     gender: string;
+    tglLahir?: string;
     nomorAntrean: string;
     selectedPoli: string;
     status?: string;
@@ -206,6 +207,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
           name: selectedPatient.name,
           gender: selectedPatient.gender,
           pasienId: selectedPatient.id,
+          tglLahir: selectedPatient.tglLahir,
           status: "Tunggu",
         });
       }
@@ -215,19 +217,18 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     e.preventDefault();
 
     try {
-      const res = await axiosInstance.get<AntreanPasien[]>(
-        "/antrean");
-        const allAntrean = res.data;
+      const res = await axiosInstance.get<AntreanPasien[]>("/antrean");
+      const allAntrean = res.data;
 
       if (!selectedPoli) return;
-   
-      
-      const antreanPoli = allAntrean.filter((a) => a.selectedPoli === selectedPoli);
-    
-    
+
+      const antreanPoli = allAntrean.filter(
+        (a) => a.selectedPoli === selectedPoli,
+      );
+
       const nextNumber = antreanPoli.length + 1;
       const code =
-selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
+        selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
 
       const newQueueNumber = `${code}-${nextNumber}`;
       setQueueNumber(newQueueNumber);
@@ -542,6 +543,12 @@ selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
                     value={formAntrean.gender}
                     onChange={handleChange}
                   />
+                   <input
+                    type="date"
+                    name="tglLahir"
+                    value={formAntrean.tglLahir}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="grid grid-cols-1 gap-2">
                   {["Umum", "Gigi", "KIA"].map((poli) => (
@@ -586,7 +593,6 @@ selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
             <h3 className="text-2xl font-bold text-slate-800 mb-1">
               Berhasil!
             </h3>
-            
 
             <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-6 mb-6">
               <div className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">
@@ -623,6 +629,7 @@ selectedPoli === "Umum" ? "A" : selectedPoli === "Gigi" ? "B" : "C";
           </div>
         </div>
       )}
+        {/* Modal Edit Data Pasien */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <form
