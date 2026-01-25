@@ -1,73 +1,55 @@
 {
   "pasien": [
     {
-      "id": "286d",
+      "id": "f884",
       "name": "Ryan Alamsyah",
-      "nik": "8238646812341276",
+      "nik": "2342352343532532",
       "tlp": "0826141235",
       "tempatLahir": "JAKARTA",
-      "tglLahir": "2026-01-24",
-      "alamat": "puri harmoni 9 extension",
-      "gender": "Laki-laki"
-    },
-    {
-      "id": "a320",
-      "name": "nafisha",
-      "nik": "3333234234325235",
-      "tlp": "79327813",
-      "tempatLahir": "",
-      "tglLahir": "2026-01-24",
-      "alamat": "",
+      "tglLahir": "2026-01-23",
+      "alamat": "jalan jawa kepodang",
       "gender": "Laki-laki"
     }
   ],
   "antrean": [
     {
-      "id": "5027",
-      "pasienId": "286d",
-      "nomorAntrean": "A-1",
-      "name": "Ryan Alamsyah",
-      "gender": "Laki-laki",
-      "selectedPoli": "Umum",
-      "status": "Resep"
-    },
-    {
-      "id": "341a",
-      "pasienId": "a320",
-      "nomorAntrean": "A-2",
-      "name": "nafisha",
-      "gender": "Laki-laki",
-      "selectedPoli": "Umum",
-      "status": "Resep"
-    },
-    {
-      "id": "9dcb",
-      "pasienId": "286d",
-      "nomorAntrean": "C-1",
-      "name": "Ryan Alamsyah",
-      "gender": "Laki-laki",
-      "selectedPoli": "KIA",
-      "status": "Tunggu"
-    },
-    {
-      "id": "6bef",
-      "pasienId": "a320",
+      "id": "acae",
+      "pasienId": "f884",
       "nomorAntrean": "B-1",
-      "name": "nafisha",
+      "name": "Ryan Alamsyah",
       "gender": "Laki-laki",
       "selectedPoli": "Gigi",
-      "status": "Tunggu"
+      "status": "Dokter"
     },
     {
-      "id": "db54",
-      "pasienId": "a320",
-      "nomorAntrean": "B-2",
-      "name": "nafisha",
+      "id": "4374",
+      "pasienId": "f884",
+      "nomorAntrean": "A-1",
+      "name": "Alamsyah",
       "gender": "Laki-laki",
-      "selectedPoli": "Gigi",
+      "selectedPoli": "Umum",
       "status": "Tunggu"
     }
   ],
-  "dokter": [],
+  "rekam-medis": [
+    {
+      "id": "5e96",
+      "pasienId": "",
+      "name": "",
+      "diagnosa": "",
+      "tindakan": "",
+      "obat": "",
+      "tanggalKunjungan": ""
+    },
+    {
+      "id": "d851",
+      "pasienId": "",
+      "name": "",
+      "diagnosa": "",
+      "tindakan": "",
+      "obat": "",
+      "tanggalKunjungan": ""
+    }
+  ],
   "obat": []
 }

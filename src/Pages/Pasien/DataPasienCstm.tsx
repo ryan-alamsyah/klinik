@@ -170,6 +170,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
   // Accept the same type as pasiens, which is likely PasienResponse
   const handleOpenAntrean = (pasiens: Pasien) => {
     setSelectedPatient(pasiens);
+    console.log(pasiens);
     setShowQueueModal(true);
   };
 
