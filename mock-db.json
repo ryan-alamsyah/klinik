@@ -1,85 +1,28 @@
 {
   "pasien": [
     {
-      "id": "f884",
+      "id": "66c2",
       "name": "Ryan Alamsyah",
-      "nik": "2342352343532532",
+      "nik": "3242353564622222",
       "tlp": "0826141235",
       "tempatLahir": "JAKARTA",
       "tglLahir": "2026-01-01",
-      "alamat": "jalan jawa kepodang",
+      "alamat": "Jalan Kepodang ",
       "gender": "Laki-laki"
     }
   ],
   "antrean": [
     {
-      "id": "fa96",
-      "pasienId": "f884",
-      "nomorAntrean": "B-1",
-      "name": "Ryan Alamsyah",
-      "gender": "Laki-laki",
-      "selectedPoli": "Gigi",
-      "status": "Tunggu",
-      "tglLahir": "2026-01-01"
-    },
-    {
-      "id": "186d",
-      "pasienId": "f884",
+      "id": "635a",
+      "pasienId": "66c2",
       "nomorAntrean": "A-1",
       "name": "Ryan Alamsyah",
       "gender": "Laki-laki",
       "selectedPoli": "Umum",
       "status": "Tunggu",
       "tglLahir": "2026-01-01"
-    },
-    {
-      "id": "e4da",
-      "pasienId": "f884",
-      "nomorAntrean": "C-1",
-      "name": "Ryan Alamsyah",
-      "gender": "Perempuan",
-      "selectedPoli": "KIA",
-      "status": "Tunggu",
-      "tglLahir": "2026-01-01"
     }
   ],
-  "rekam-medis": [
-    {
-      "id": "dd69",
-      "pasienId": "f884",
-      "name": "Ryan Alamsyah",
-      "keluhan": "Lapar",
-      "diagnosa": "Sakit Demam",
-      "tindakan": "",
-      "obat": "",
-      "tanggalKunjungan": "",
-      "tglLahir": "2026-01-01",
-      "pemeriksaanFisik": {
-        "tensi": "10",
-        "suhu": "20",
-        "beratBadan": "44"
-      },
-      "gender": "Perempuan",
-      "tensi": "4"
-    },
-    {
-      "id": "853d",
-      "pasienId": "f884",
-      "name": "Ryan Alamsyah",
-      "tglLahir": "2026-01-01",
-      "gender": "Perempuan",
-      "keluhan": "keluhan 1",
-      "diagnosa": "diagnosa 2",
-      "tindakan": "tindakan 3",
-      "obat": "",
-      "tanggalKunjungan": "",
-      "pemeriksaanFisik": {
-        "tensi": "",
-        "suhu": "",
-        "beratBadan": ""
-      },
-      "suratKeterangan": ""
-    }
-  ],
+  "rekam-medis": [],
   "obat": []
 }
