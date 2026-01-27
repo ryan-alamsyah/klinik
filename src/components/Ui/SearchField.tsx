@@ -15,6 +15,9 @@ export const SearchField = ({
 }: SearchFieldProps) => {
   return (
     <>
+     <div className="bg-white w-full rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+        <div className="p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-end gap-6"> 
       <div className="flex-1">
         {label && (
         <label className="block text-sm font-semibold text-slate-600 mb-2">
@@ -35,6 +38,9 @@ export const SearchField = ({
           />
         </div>
       </div>
+       </div>
+        </div>
+         </div>
     </>
   );
 };

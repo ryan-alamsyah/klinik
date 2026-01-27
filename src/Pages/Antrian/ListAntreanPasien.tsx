@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { RefreshCw, Pencil, Check, UserPlus } from "lucide-react";
+import {
+  RefreshCw,
+  Pencil,
+  Check,
+  UserPlus,
+  Megaphone,
+  ClipboardPlus,
+} from "lucide-react";
 import Toast from "../../components/Ui/Toast";
 import type { AlertColor } from "@mui/material";
 import { axiosInstance } from "../../components/lib/axios";
@@ -9,10 +16,12 @@ import { useAntreanPasien } from "../../components/api/useAntreanPasein";
 
 const ListAntreanPasien = () => {
   const [isSpinner, setIsSpinner] = useState(false);
-  const [showUpdateAntrean, setShowUpdateAntrean] = useState<boolean>(false);
+  const [showFormMedis, setshowFormMedis] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [showUpdateStatusAntrean, setShowUpdateStatusAntrean] =
+    useState<boolean>(false);
 
   const { rekamMedis } = useRekamMedisPasien();
   const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
@@ -29,17 +38,18 @@ const ListAntreanPasien = () => {
     name: string;
     poli?: string;
     gender: string;
-    tglLahir: string;
+    tglLahir?: string;
     nomorAntrean: string;
     selectedPoli: string;
     status?: string;
+    tanggalKunjungan?: string;
   }
 
   interface IPemeriksaanFisik {
-  tensi: string;     
-  suhu: number | string; 
-  beratBadan: number | string;
-}
+    tensi: string;
+    suhu: number | string;
+    beratBadan: number | string;
+  }
 
   interface FormMedisRecord {
     pasienId: string;
@@ -54,13 +64,17 @@ const ListAntreanPasien = () => {
     pemeriksaanFisik: IPemeriksaanFisik;
     suratKeterangan: string;
   }
+  interface StatusAntrean {
+    name: string;
+    status: string;
+  }
 
   const [formMedisRecord, setFormMedisRecord] = useState<FormMedisRecord>({
     pasienId: "",
     name: "",
     tglLahir: "",
     gender: "",
-    keluhan: "", 
+    keluhan: "",
     diagnosa: "",
     tindakan: "",
     obat: "",
@@ -72,6 +86,40 @@ const ListAntreanPasien = () => {
     },
     suratKeterangan: "",
   });
+
+
+
+  const panggilPasien = (antreanPasien: AntreanPasien) => {
+    console.log("Panggil pasien:", antreanPasien);
+    const utterance = new SpeechSynthesisUtterance(
+      `Nomor antrian ${antreanPasien.nomorAntrean}, atas nama ${antreanPasien.name}. Silakan menuju ke ${antreanPasien.status}`,
+    );
+
+    utterance.lang = "id-ID";
+    window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.cancel();
+  };
+
+  const [formUpdateStatus, setFormUpdateStatus] = useState<StatusAntrean>({
+    status: "",
+    name: "",
+  })
+
+  const handleUpdateStatus = (antreanPasien: AntreanPasien) => {
+    setShowUpdateStatusAntrean(true);
+    console.log(antreanPasien.name)
+    setFormUpdateStatus({
+      ...formUpdateStatus,
+      name: antreanPasien.name
+    })
+
+   
+  };
+
+  const handleCloseModalAntrean = () => {
+    setSelectedPatient(null);
+    setShowUpdateStatusAntrean(false);
+  };
 
   // 2. Fungsi helper untuk memicu toast
   const showToast = (message: string, severity: AlertColor = "success") => {
@@ -94,14 +142,15 @@ const ListAntreanPasien = () => {
     }
   };
 
-  const updateAntren = (antreanPasien: AntreanPasien) => {
-    setShowUpdateAntrean(true);
+  const handleFormRekamMedis = (antreanPasien: AntreanPasien) => {
+    setshowFormMedis(true);
     setFormMedisRecord({
       ...formMedisRecord,
       pasienId: antreanPasien.pasienId,
       name: antreanPasien.name,
-      tglLahir: antreanPasien.tglLahir,
+      tglLahir: antreanPasien.tglLahir ?? "",
       gender: antreanPasien.gender,
+      tanggalKunjungan: antreanPasien.tanggalKunjungan ?? "",
     });
   };
   const filteredPatients = antreanPasien.filter(
@@ -122,7 +171,7 @@ const ListAntreanPasien = () => {
       setFormMedisRecord({
         pasienId: "",
         name: "",
-        keluhan: "", 
+        keluhan: "",
         diagnosa: "",
         tindakan: "",
         obat: "",
@@ -138,7 +187,7 @@ const ListAntreanPasien = () => {
       });
       showToast("Rekam medis pasien berhasil disimpan", "success");
       setIsSubmitting(false);
-      setShowUpdateAntrean(false);
+      setshowFormMedis(false);
       fetchAntreanPasien();
     } catch (error) {
       showToast("Gagal menyimpan rekam medis pasien", "error");
@@ -149,11 +198,11 @@ const ListAntreanPasien = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     const pemeriksaanFisikFields = ["tensi", "suhu", "beratBadan"];
-  
+
     if (pemeriksaanFisikFields.includes(name)) {
       setFormMedisRecord({
         ...formMedisRecord,
@@ -168,7 +217,6 @@ const ListAntreanPasien = () => {
         [name]: value,
       });
     }
-    
   };
 
   return (
@@ -262,16 +310,35 @@ const ListAntreanPasien = () => {
                     <td className="px-6 py-4  text-sm text-slate-600 ">
                       {p.selectedPoli}
                     </td>
-
-                    <td className="flex justify-center gap-1.5 items-center mt-6">
-                      <button
-                        title="Update"
-                        onClick={() => updateAntren(p)}
-                        className="inline-flex items-center p-2 bg-emerald-400 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 transition shadow-sm cursor-pointer"
-                      >
-                        <Pencil size={14} />
-                      </button>
-                    </td>
+                    <div className="flex justify-center gap-1.5 items-center ">
+                      <td className="flex justify-center gap-1.5 items-center mt-6">
+                        <button
+                          title="Rekam Medis"
+                          onClick={() => handleFormRekamMedis(p)}
+                          className="inline-flex items-center p-2 bg-emerald-400 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 transition shadow-sm cursor-pointer"
+                        >
+                          <ClipboardPlus size={14} />
+                        </button>
+                      </td>
+                      <td className="flex justify-center gap-1.5 items-center mt-6">
+                        <button
+                          title="Panggil Antrian"
+                          onClick={() => handleUpdateStatus(p)}
+                          className="inline-flex items-center p-2 bg-orange-400 text-white text-xs font-bold rounded-lg hover:bg-orange-500 transition shadow-sm cursor-pointer"
+                        >
+                          <Pencil size={14} />
+                        </button>
+                      </td>
+                      <td className="flex justify-center gap-1.5 items-center mt-6">
+                        <button
+                          title="Panggil Antrian"
+                          onClick={() => panggilPasien(p)}
+                          className="inline-flex items-center p-2 bg-red-400 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition shadow-sm cursor-pointer"
+                        >
+                          <Megaphone size={14} />
+                        </button>
+                      </td>
+                    </div>
                   </tr>
                 ))
               ) : (
@@ -289,7 +356,7 @@ const ListAntreanPasien = () => {
         </div>
       </div>
 
-      {showUpdateAntrean && (
+      {showFormMedis && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <form onSubmit={handleSubmit}>
             <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
@@ -317,7 +384,7 @@ const ListAntreanPasien = () => {
                         className="w-full p-2.5 border border-slate-200 rounded-lg outline-none"
                       />
                     </div>
-                     <div>
+                    <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                         Keluhan *
                       </label>
@@ -333,11 +400,11 @@ const ListAntreanPasien = () => {
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                         Tensi
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Tensi
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           name="tensi"
                           value={formMedisRecord.pemeriksaanFisik.tensi}
                           onChange={handleChange}
@@ -346,11 +413,11 @@ const ListAntreanPasien = () => {
                         />
                       </div>
                       <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                         Suhu
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Suhu
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           name="suhu"
                           value={formMedisRecord.pemeriksaanFisik.suhu}
                           onChange={handleChange}
@@ -359,8 +426,8 @@ const ListAntreanPasien = () => {
                         />
                       </div>
                       <div>
-                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                         Berat Badan
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Berat Badan
                         </label>
                         <input
                           type="number"
@@ -386,7 +453,7 @@ const ListAntreanPasien = () => {
                         placeholder="Diagnosa penyakit pasien"
                       />
                     </div>
-                   
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -404,8 +471,8 @@ const ListAntreanPasien = () => {
                         </label>
                         <input
                           type="date"
-                          name="tglLahir"
-                          value={formMedisRecord.tglLahir}
+                          name="tanggalKunjungan"
+                          value={formMedisRecord.tanggalKunjungan}
                           onChange={() => {}}
                           className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                         />
@@ -414,25 +481,30 @@ const ListAntreanPasien = () => {
                   </div>
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-2">
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                        Jenis Kelamin
-                      </label>
-                      <div className="flex gap-4 mt-2">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="gender"
-                            value={formMedisRecord.gender}
-                            onChange={() => {}}
-                            className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
-                          />
-                          <span className="text-sm">{formMedisRecord.gender}</span>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Jenis Kelamin
                         </label>
+                        <div className="flex gap-4 mt-2">
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="gender"
+                              checked={
+                                formMedisRecord.gender === "Laki-laki" ||
+                                formMedisRecord.gender === "Perempuan"
+                              }
+                              value={formMedisRecord.gender}
+                              onChange={handleChange}
+                              className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-sm">
+                              {formMedisRecord.gender}
+                            </span>
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    <div>
+                      <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                           Tanggal Lahir
                         </label>
@@ -444,7 +516,7 @@ const ListAntreanPasien = () => {
                           className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                         />
                       </div>
-                      </div>
+                    </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                         Tindakan*
@@ -467,7 +539,6 @@ const ListAntreanPasien = () => {
                         name="obat"
                         value={formMedisRecord.obat}
                         onChange={handleChange}
-                        required
                         className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                       >
                         <option value="">Pilih Obat</option>
@@ -482,17 +553,16 @@ const ListAntreanPasien = () => {
                 </div>
 
                 <div className="mt-8 flex justify-end gap-3">
-                    
                   <div className="flex justify-center mt-4  gap-4 relative">
-                     <div>
-                    <button
-                      type="button"
-                      onClick={() => setShowUpdateAntrean(false)}
-                      className="px-4 py-2 rounded text-slate-600 bg-slate-200 hover:bg-slate-300 transition"
-                    >
-                      Batal
-                    </button>
-                  </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setshowFormMedis(false)}
+                        className="px-4 py-2 rounded text-slate-600 bg-slate-200 hover:bg-slate-300 transition"
+                      >
+                        Batal
+                      </button>
+                    </div>
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -509,7 +579,92 @@ const ListAntreanPasien = () => {
                       {isSubmitting ? "Menyimpan..." : "Simpan"}
                     </button>
                   </div>
-                 
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {showUpdateStatusAntrean && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <form>
+            <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
+              <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
+                <h2 className="text-emerald-800 font-bold flex items-center gap-2">
+                  <Megaphone size={18} />
+                </h2>
+                <span className="text-xs text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full font-semibold uppercase tracking-wider">
+                  Status Panggil Antrian
+                </span>
+              </div>
+              <div className="p-6 md:p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Nama Pasien *
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formUpdateStatus.name}
+                          onChange={handleChange}
+                          readOnly
+                          className="w-full p-2.5 border border-slate-200 rounded-lg outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          Status Antrian
+                        </label>
+                        <select className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+                          <option value="sehat">Triase</option>
+                          <option value="dokter">Dokter</option>
+                          <option value="resep">Resep</option>
+                          <option value="terlewati">Terlewati</option>
+                        </select>
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          className="px-4 py-2 cursor-pointer hover:scale-125 rounded text-slate-600 bg-slate-200 hover:bg-slate-300 transition"
+                        >
+                          Panggil
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex justify-end gap-3">
+                  <div className="flex justify-center mt-4  gap-4 relative">
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => handleCloseModalAntrean()}
+                        className="px-4 py-2 rounded text-slate-600 bg-slate-200 hover:bg-slate-300 transition"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`flex items-center justify-center gap-2 px-4 py-2 rounded text-white
+                                ${
+                                  isSubmitting
+                                    ? "bg-gray-400"
+                                    : "bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+                                } `}
+                    >
+                      {isSubmitting && (
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      )}
+                      {isSubmitting ? "Menyimpan..." : "Simpan"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

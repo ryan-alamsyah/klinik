@@ -16,7 +16,7 @@ import { UserPlus } from "lucide-react";
 import type { AlertColor } from "@mui/material";
 import Toast from "../../components/Ui/Toast";
 import Swal from "sweetalert2";
-import AlertDialogSlide from "../../components/Ui/Dialog";
+
 import { axiosInstance } from "../../components/lib/axios";
 
 interface Pasien {
@@ -89,6 +89,8 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     gender: "",
     selectedPoli: "",
     status: "Tunggu",
+    tglLahir: "",
+    tanggalKunjungan: "",
   });
 
   // 1. Definisikan state notifikasi
@@ -237,6 +239,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
         selectedPoli,
         nomorAntrean: newQueueNumber,
         status: "Tunggu",
+        tanggalKunjungan: new Date().toISOString().split("T")[0],
       };
 
       await axiosInstance.post("/antrean", payload);

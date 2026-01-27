@@ -1,28 +1,87 @@
 {
   "pasien": [
     {
-      "id": "66c2",
+      "id": "7735",
       "name": "Ryan Alamsyah",
-      "nik": "3242353564622222",
+      "nik": "2415364363462664",
       "tlp": "0826141235",
       "tempatLahir": "JAKARTA",
-      "tglLahir": "2026-01-01",
-      "alamat": "Jalan Kepodang ",
+      "tglLahir": "2025-11-01",
+      "alamat": "Jalan Jalak Kabupaten Subang",
       "gender": "Laki-laki"
+    },
+    {
+      "id": "b0c4",
+      "name": "Nafisha",
+      "nik": "5362346452363562",
+      "tlp": "235235",
+      "tempatLahir": "DEPOK",
+      "tglLahir": "2025-11-01",
+      "alamat": "Jalan sudirman jakarta",
+      "gender": "Perempuan"
     }
   ],
   "antrean": [
     {
-      "id": "635a",
-      "pasienId": "66c2",
-      "nomorAntrean": "A-1",
+      "id": "a52f",
+      "pasienId": "7735",
+      "nomorAntrean": "B-1",
       "name": "Ryan Alamsyah",
       "gender": "Laki-laki",
-      "selectedPoli": "Umum",
+      "selectedPoli": "Gigi",
       "status": "Tunggu",
-      "tglLahir": "2026-01-01"
+      "tglLahir": "2025-11-01",
+      "tanggalKunjungan": "2026-01-26"
+    },
+    {
+      "id": "3d46",
+      "pasienId": "b0c4",
+      "nomorAntrean": "C-1",
+      "name": "Nafisha",
+      "gender": "Perempuan",
+      "selectedPoli": "KIA",
+      "status": "Tunggu",
+      "tglLahir": "2025-11-01",
+      "tanggalKunjungan": "2026-01-27"
     }
   ],
-  "rekam-medis": [],
+  "rekam-medis": [
+    {
+      "id": "50f6",
+      "pasienId": "7735",
+      "name": "Ryan Alamsyah",
+      "tglLahir": "2025-11-01",
+      "gender": "Laki-laki",
+      "keluhan": "fff",
+      "diagnosa": "ff",
+      "tindakan": "dsdf",
+      "obat": "",
+      "tanggalKunjungan": "2026-01-26",
+      "pemeriksaanFisik": {
+        "tensi": "",
+        "suhu": "",
+        "beratBadan": ""
+      },
+      "suratKeterangan": ""
+    },
+    {
+      "id": "c9ca",
+      "pasienId": "",
+      "name": "",
+      "tglLahir": "",
+      "gender": "",
+      "keluhan": "",
+      "diagnosa": "",
+      "tindakan": "",
+      "obat": "",
+      "tanggalKunjungan": "",
+      "pemeriksaanFisik": {
+        "tensi": "",
+        "suhu": "",
+        "beratBadan": ""
+      },
+      "suratKeterangan": ""
+    }
+  ],
   "obat": []
 }
