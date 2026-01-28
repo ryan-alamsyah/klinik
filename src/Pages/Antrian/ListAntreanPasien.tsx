@@ -23,6 +23,8 @@ const ListAntreanPasien = () => {
   const [showUpdateStatusAntrean, setShowUpdateStatusAntrean] =
     useState<boolean>(false);
 
+    const [countPanggil, setCountPanggil] = useState({})
+
   const { rekamMedis } = useRekamMedisPasien();
   const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
   // 1. Definisikan state notifikasi
@@ -91,6 +93,8 @@ const ListAntreanPasien = () => {
 
   const panggilPasien = (antreanPasien: AntreanPasien) => {
     console.log("Panggil pasien:", antreanPasien);
+    showToast(`Memanggil ${antreanPasien.name} (${antreanPasien.nomorAntrean}) Ke ${antreanPasien.status}`)
+    
     const utterance = new SpeechSynthesisUtterance(
       `Nomor antrian ${antreanPasien.nomorAntrean}, atas nama ${antreanPasien.name}. Silakan menuju ke ${antreanPasien.status}`,
     );
@@ -275,9 +279,9 @@ const ListAntreanPasien = () => {
                         {p.nomorAntrean}
                       </div>
                     </td>
-                    <td className="2xl:w-120 lg:w-78  ">
+                    <td className="2xl:w-120 lg:w-78 ">
                       <span className="flex gap-1 ju">
-                        {["Tunggu", "Triase", "Dokter", "Resep"].map(
+                        {["Tunggu", "Triase", "Dokter", "Farmasi"].map(
                           (stepName, index, array) => {
                             const currentStepIndex = array.indexOf(
                               p.status ? p.status : "Tunggu",
@@ -292,7 +296,7 @@ const ListAntreanPasien = () => {
                                     className={`p-2 rounded-4xl text-xs text-slate-500 ${
                                       isCompleted
                                         ? "bg-emerald-400"
-                                        : "bg-orange-400"
+                                        : "bg-gray-400"
                                     }`}
                                   >
                                     <Check size={12} className="text-white" />
@@ -301,10 +305,12 @@ const ListAntreanPasien = () => {
                                     {stepName}
                                   </span>
                                 </div>
+                              
                               </>
                             );
                           },
                         )}
+                       
                       </span>
                     </td>
                     <td className="px-6 py-4  text-sm text-slate-600 ">

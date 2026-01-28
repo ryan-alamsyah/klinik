@@ -19,30 +19,51 @@
       "tglLahir": "2025-11-01",
       "alamat": "Jalan sudirman jakarta",
       "gender": "Perempuan"
+    },
+    {
+      "id": "9108",
+      "name": "Abdullah Bin Zain",
+      "nik": "3453534562346234",
+      "tlp": "0826141235",
+      "tempatLahir": "Bogorr",
+      "tglLahir": "2023-01-04",
+      "alamat": "Jalan Jalak",
+      "gender": "Laki-laki"
     }
   ],
   "antrean": [
     {
-      "id": "a52f",
-      "pasienId": "7735",
-      "nomorAntrean": "B-1",
-      "name": "Ryan Alamsyah",
-      "gender": "Laki-laki",
+      "id": "bf0a",
+      "pasienId": "b0c4",
+      "nomorAntrean": "B-5",
+      "name": "Nafisha",
+      "gender": "Perempuan",
       "selectedPoli": "Gigi",
       "status": "Tunggu",
       "tglLahir": "2025-11-01",
-      "tanggalKunjungan": "2026-01-26"
+      "tanggalKunjungan": "2026-01-28"
     },
     {
-      "id": "3d46",
-      "pasienId": "b0c4",
-      "nomorAntrean": "C-1",
-      "name": "Nafisha",
-      "gender": "Perempuan",
-      "selectedPoli": "KIA",
+      "id": "2ea2",
+      "pasienId": "7735",
+      "nomorAntrean": "A-1",
+      "name": "Ryan Alamsyah",
+      "gender": "Laki-laki",
+      "selectedPoli": "Umum",
       "status": "Tunggu",
       "tglLahir": "2025-11-01",
-      "tanggalKunjungan": "2026-01-27"
+      "tanggalKunjungan": "2026-01-28"
+    },
+    {
+      "id": "5b69",
+      "pasienId": "9108",
+      "nomorAntrean": "A-2",
+      "name": "Abdullah Bin Zain",
+      "gender": "Laki-laki",
+      "selectedPoli": "Umum",
+      "status": "Dokter",
+      "tglLahir": "2023-01-04",
+      "tanggalKunjungan": "2026-01-28"
     }
   ],
   "rekam-medis": [
@@ -79,6 +100,24 @@
         "tensi": "",
         "suhu": "",
         "beratBadan": ""
+      },
+      "suratKeterangan": ""
+    },
+    {
+      "id": "3c87",
+      "pasienId": "b0c4",
+      "name": "Nafisha",
+      "tglLahir": "2025-11-01",
+      "gender": "Perempuan",
+      "keluhan": "Perut Kenyang",
+      "diagnosa": "Sakit Demam",
+      "tindakan": "tindakan 3",
+      "obat": "",
+      "tanggalKunjungan": "2026-01-28",
+      "pemeriksaanFisik": {
+        "tensi": "110/90",
+        "suhu": "36",
+        "beratBadan": "18"
       },
       "suratKeterangan": ""
     }
