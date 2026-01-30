@@ -13,6 +13,7 @@ import { axiosInstance } from "../../components/lib/axios";
 import { SearchField } from "../../components/Ui/SearchField";
 import useRekamMedisPasien from "../../components/api/useRekamMedisPasien";
 import { useAntreanPasien } from "../../components/api/useAntreanPasein";
+import useUpdateStatusAntrean from "../../components/api/useUpdateStatusAntrean";
 
 const ListAntreanPasien = () => {
   const [isSpinner, setIsSpinner] = useState(false);
@@ -27,6 +28,7 @@ const ListAntreanPasien = () => {
 
   const { rekamMedis } = useRekamMedisPasien();
   const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
+  const {updateStatusAntrean} = useUpdateStatusAntrean()
   // 1. Definisikan state notifikasi
   const [notification, setNotification] = useState({
     open: false,
@@ -67,6 +69,7 @@ const ListAntreanPasien = () => {
     suratKeterangan: string;
   }
   interface StatusAntrean {
+    id: string;
     name: string;
     status: string;
   }
@@ -105,20 +108,35 @@ const ListAntreanPasien = () => {
   };
 
   const [formUpdateStatus, setFormUpdateStatus] = useState<StatusAntrean>({
+    id: "",
     status: "",
     name: "",
   })
+const handleSubmitUpdateStatus = async (id: string) => {
+ console.log("ok")
 
-  const handleUpdateStatus = (antreanPasien: AntreanPasien) => {
+ if(!formUpdateStatus?.status) return;
+
+ const success = await updateStatusAntrean(id,{
+  status: formUpdateStatus.status,
+ });
+
+ if (success) {
+  await fetchAntreanPasien();
+  console.log(success);
+ }
+  }
+  const handleUpdateStatus =  (antreanPasien: AntreanPasien) => {
     setShowUpdateStatusAntrean(true);
     console.log(antreanPasien.name)
     setFormUpdateStatus({
       ...formUpdateStatus,
-      name: antreanPasien.name
-    })
-
+      name: antreanPasien.name,
+    });
    
   };
+
+  
 
   const handleCloseModalAntrean = () => {
     setSelectedPatient(null);
@@ -594,7 +612,14 @@ const ListAntreanPasien = () => {
 
       {showUpdateStatusAntrean && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <form>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            if(formUpdateStatus.id) {
+            await handleSubmitUpdateStatus(formUpdateStatus.id);
+            
+            }
+         
+          }}>
             <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
               <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
                 <h2 className="text-emerald-800 font-bold flex items-center gap-2">
@@ -625,7 +650,15 @@ const ListAntreanPasien = () => {
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                           Status Antrian
                         </label>
-                        <select className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <select className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        onChange={(e) => {
+                          setFormUpdateStatus((prev) => ({
+                            ...prev,
+                            status: e.target.value,
+                          }))
+                        }}
+                        >
+                          <option value="" disabled>Pilih Status</option>
                           <option value="sehat">Triase</option>
                           <option value="dokter">Dokter</option>
                           <option value="resep">Resep</option>

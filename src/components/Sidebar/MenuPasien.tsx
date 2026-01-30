@@ -33,7 +33,7 @@ const MenuPasien = () => {
                   isVisibleDokter ? "-rotate-90" :"rotate-0" 
                 }`}/>
               </button>
-              <Link to="/list-pasien" className={subMenuClassDokter}>
+              <Link to="/data-dokter" className={subMenuClassDokter}>
                 <div className="hover:bg-emerald-600 hover:duration-700  w-full p-2 cursor-pointer flex gap-4 rounded-xl  hover:text-white items-center">
                   <GoDotFill />
                   <span className="text-sm">Database Dokter</span>

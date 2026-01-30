@@ -7,6 +7,7 @@ import DataPasienPage from "./Pages/Pasien/DataPasienPage";
 import TombolAntrean from "./Pages/Antrian/TombolAntrian";
 import { PasienPage } from "./Pages/Pasien/PasienPage";
 import ListAntreanPasien from "./Pages/Antrian/ListAntreanPasien";
+import DataDokter from "./Pages/Dokter/DataDokter";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/nomor-antrean" element={<ListAntreanPasien />} />
           <Route path="/data-pasien" element={<PasienPage />} />
           <Route path="/list-antrean-pasien" element={<ListAntreanPasien />} />
+          <Route path="/data-dokter" element={<DataDokter />} />
           
         </Route>
       </Routes>

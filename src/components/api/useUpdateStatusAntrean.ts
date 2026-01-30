@@ -4,11 +4,18 @@ import { useState } from "react";
 const useUpdateStatusAntrean = () => {
     
     const [isLoading, setIsLoading] = useState(false);
+
+    interface AntreanPasien {
+    status?: string;
+
     
-    const updateStatusAntrean = async (id: string, status: string) => {
+}
+    
+    const updateStatusAntrean = async (id: string,
+  updatedData: Partial<AntreanPasien>) => {
         setIsLoading(true);
         try {
-            await axiosInstance.patch(`/antrean/${id}`, { status });
+            await axiosInstance.patch(`/antrean/${id}`, { updatedData });
             return true;
         } catch (error) {
             console.error("Error updating status antrean:", error);
