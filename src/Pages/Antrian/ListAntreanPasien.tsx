@@ -24,11 +24,11 @@ const ListAntreanPasien = () => {
   const [showUpdateStatusAntrean, setShowUpdateStatusAntrean] =
     useState<boolean>(false);
 
-    const [countPanggil, setCountPanggil] = useState({})
+  const [countPanggil, setCountPanggil] = useState({});
 
   const { rekamMedis } = useRekamMedisPasien();
   const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
-  const {updateStatusAntrean} = useUpdateStatusAntrean()
+  const { updateStatusAntrean } = useUpdateStatusAntrean();
   // 1. Definisikan state notifikasi
   const [notification, setNotification] = useState({
     open: false,
@@ -92,12 +92,12 @@ const ListAntreanPasien = () => {
     suratKeterangan: "",
   });
 
-
-
   const panggilPasien = (antreanPasien: AntreanPasien) => {
     console.log("Panggil pasien:", antreanPasien);
-    showToast(`Memanggil ${antreanPasien.name} (${antreanPasien.nomorAntrean}) Ke ${antreanPasien.status}`)
-    
+    showToast(
+      `Memanggil ${antreanPasien.name} (${antreanPasien.nomorAntrean}) Ke ${antreanPasien.status}`,
+    );
+
     const utterance = new SpeechSynthesisUtterance(
       `Nomor antrian ${antreanPasien.nomorAntrean}, atas nama ${antreanPasien.name}. Silakan menuju ke ${antreanPasien.status}`,
     );
@@ -111,32 +111,30 @@ const ListAntreanPasien = () => {
     id: "",
     status: "",
     name: "",
-  })
-const handleSubmitUpdateStatus = async (id: string) => {
- console.log("ok")
+  });
+  const handleSubmitUpdateStatus = async (id: string) => {
+    console.log("ok");
 
- if(!formUpdateStatus?.status) return;
+    if (!formUpdateStatus?.status) return;
 
- const success = await updateStatusAntrean(id,{
-  status: formUpdateStatus.status,
- });
+    const success = await updateStatusAntrean(id, {
+      status: formUpdateStatus.status,
+    });
 
- if (success) {
-  await fetchAntreanPasien();
-  console.log(success);
- }
-  }
-  const handleUpdateStatus =  (antreanPasien: AntreanPasien) => {
+    if (success) {
+      await fetchAntreanPasien();
+      console.log(success);
+    }
+  };
+
+  const handleUpdateStatus = (antreanPasien: AntreanPasien) => {
     setShowUpdateStatusAntrean(true);
-    console.log(antreanPasien.name)
+    console.log(antreanPasien.name);
     setFormUpdateStatus({
       ...formUpdateStatus,
       name: antreanPasien.name,
     });
-   
   };
-
-  
 
   const handleCloseModalAntrean = () => {
     setSelectedPatient(null);
@@ -323,12 +321,10 @@ const handleSubmitUpdateStatus = async (id: string) => {
                                     {stepName}
                                   </span>
                                 </div>
-                              
                               </>
                             );
                           },
                         )}
-                       
                       </span>
                     </td>
                     <td className="px-6 py-4  text-sm text-slate-600 ">
@@ -612,14 +608,14 @@ const handleSubmitUpdateStatus = async (id: string) => {
 
       {showUpdateStatusAntrean && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <form onSubmit={async (e) => {
-            e.preventDefault();
-            if(formUpdateStatus.id) {
-            await handleSubmitUpdateStatus(formUpdateStatus.id);
-            
-            }
-         
-          }}>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (formUpdateStatus.id) {
+                await handleSubmitUpdateStatus(formUpdateStatus.id);
+              }
+            }}
+          >
             <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
               <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
                 <h2 className="text-emerald-800 font-bold flex items-center gap-2">
@@ -650,15 +646,18 @@ const handleSubmitUpdateStatus = async (id: string) => {
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                           Status Antrian
                         </label>
-                        <select className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                        onChange={(e) => {
-                          setFormUpdateStatus((prev) => ({
-                            ...prev,
-                            status: e.target.value,
-                          }))
-                        }}
+                        <select
+                          className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                          onChange={(e) => {
+                            setFormUpdateStatus((prev) => ({
+                              ...prev,
+                              status: e.target.value,
+                            }));
+                          }}
                         >
-                          <option value="" disabled>Pilih Status</option>
+                          <option value="" disabled>
+                            Pilih Status
+                          </option>
                           <option value="sehat">Triase</option>
                           <option value="dokter">Dokter</option>
                           <option value="resep">Resep</option>

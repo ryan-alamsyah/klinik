@@ -70,6 +70,7 @@ const RegistPasien = ({ pasiens, fetchPasiens }: Props) => {
     nomorAntrean: string;
     selectedPoli: string;
     status?: string;
+    tanggalKunjungan: string;
   }
 
   const [form, setForm] = useState<Pasien>({

@@ -1,21 +1,57 @@
-import { useState } from "react";
-import { SearchField } from "../../components/Ui/SearchField"
+import { useState, useEffect } from "react";
+import { axiosInstance } from "../../components/lib/axios";
+import FormDokter from "./FormDokter";
+import TabelDokter from "./TabelDokter";
 
+interface Dokter {
+  id: string;
+  nameDokter: string;
+  gender: string;
+  jadwalPraktek: string;
+  poli: string;
+}
 
 const DataDokter = () => {
+  const [dokters, setDokters] = useState<Dokter[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const [searchQuery, setSearchQuery] = useState('');
-    return (
-        <>
-        <SearchField 
-            label="Pencarian Jadwal Dokter"
-            placeholder="Masukan Pencarian"
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+  const fetchDokter = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axiosInstance.get("/data-dokter");
+      setDokters(res.data);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDokter();
+  }, []);
+
+  const filteredDokters = dokters.filter(
+    (d) =>
+      d.nameDokter.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      d.poli.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <>
+      <FormDokter
+        fetchDokter={fetchDokter}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+
+     
+        <TabelDokter
+          dokters={filteredDokters}
+          fetchDokter={fetchDokter}
         />
-        
-        </>
-    )
-}
+    
+    </>
+  );
+};
 
 export default DataDokter;

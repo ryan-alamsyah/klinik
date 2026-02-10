@@ -64,6 +64,17 @@
       "status": "Dokter",
       "tglLahir": "2023-01-04",
       "tanggalKunjungan": "2026-01-28"
+    },
+    {
+      "id": "5c7a",
+      "pasienId": "9108",
+      "nomorAntrean": "B-2",
+      "name": "Abdullah Bin Zain",
+      "gender": "Laki-laki",
+      "selectedPoli": "Gigi",
+      "status": "Tunggu",
+      "tglLahir": "2023-01-04",
+      "tanggalKunjungan": "2026-02-10"
     }
   ],
   "rekam-medis": [
@@ -120,6 +131,58 @@
         "beratBadan": "18"
       },
       "suratKeterangan": ""
+    },
+    {
+      "id": "e93f",
+      "pasienId": "7735",
+      "name": "Ryan Alamsyah",
+      "tglLahir": "2025-11-01",
+      "gender": "Laki-laki",
+      "keluhan": "lapar",
+      "diagnosa": "Sakit Demam",
+      "tindakan": "tindakan 3",
+      "obat": "",
+      "tanggalKunjungan": "2026-01-28",
+      "pemeriksaanFisik": {
+        "tensi": "120/80",
+        "suhu": "368",
+        "beratBadan": "26"
+      },
+      "suratKeterangan": ""
+    }
+  ],
+  "data-dokter": [
+    {
+      "id": "b7f1",
+      "nameDokter": "Dokter Nafisha",
+      "NIK": "123123",
+      "tempatLahir": "",
+      "tglLahir": "2015-01-01",
+      "gender": "Laki-laki",
+      "tlp": "",
+      "nmrSTR": "9999999999999",
+      "mulaiSTR": "2026-02-06",
+      "endSTR": "2026-02-11",
+      "npwp": "",
+      "jadwalPraktek": "",
+      "poli": "Umum",
+      "foto": ""
+    },
+    {
+      "id": "a06a",
+      "nameDokter": "dia",
+      "NIK": "25235235",
+      "tempatLahir": "",
+      "tglLahir": "",
+      "gender": "Perempuan",
+      "tlp": "",
+      "nmrSTR": "2357477777",
+      "mulaiSTR": "",
+      "endSTR": "",
+      "npwp": "",
+      "jadwalPraktek": "",
+      "poli": "Gigi",
+      "foto": "C:\\fakepath\\benyamin-bohlouli-e7MJLM5VGjY-unsplash.jpg"
     }
   ],
   "obat": []
