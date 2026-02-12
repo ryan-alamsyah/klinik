@@ -160,7 +160,6 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
                 <tr className="text-xs uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
                   <th className="px-6 py-4 font-bold">Nama Dokter</th>
                   <th className="px-6 py-4 font-bold">Gender</th>
-                  <th className="px-6 py-4 font-bold">Jadwal</th>
                   <th className="px-6 py-4 font-bold">Poli</th>
                   <th className="px-6 py-4 font-bold text-center">Aksi</th>
                 </tr>
@@ -174,8 +173,7 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
                         {d.nameDokter}
                       </td>
                       <td className="px-6 py-4">{d.gender}</td>
-                       <td className="px-6 py-4">{d.foto}</td>
-                      <td className="px-6 py-4">{d.jadwalPraktek}</td>
+                      
                       <td className="px-6 py-4">{d.poli}</td>
                       <td className="px-6 py-4 flex justify-center gap-2">
                         <button

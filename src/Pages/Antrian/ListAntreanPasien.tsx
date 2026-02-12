@@ -93,11 +93,6 @@ const ListAntreanPasien = () => {
   });
 
   const panggilPasien = (antreanPasien: AntreanPasien) => {
-    console.log("Panggil pasien:", antreanPasien);
-    showToast(
-      `Memanggil ${antreanPasien.name} (${antreanPasien.nomorAntrean}) Ke ${antreanPasien.status}`,
-    );
-
     const utterance = new SpeechSynthesisUtterance(
       `Nomor antrian ${antreanPasien.nomorAntrean}, atas nama ${antreanPasien.name}. Silakan menuju ke ${antreanPasien.status}`,
     );
@@ -105,6 +100,12 @@ const ListAntreanPasien = () => {
     utterance.lang = "id-ID";
     window.speechSynthesis.speak(utterance);
     window.speechSynthesis.cancel();
+    console.log("Panggil pasien:", antreanPasien);
+    showToast(
+      `Memanggil ${antreanPasien.name} (${antreanPasien.nomorAntrean}) Ke ${antreanPasien.status}`,
+    );
+
+    
   };
 
   const [formUpdateStatus, setFormUpdateStatus] = useState<StatusAntrean>({

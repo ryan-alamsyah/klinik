@@ -32,36 +32,40 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
   interface Dokter {
     nameDokter: string;
     NIK: string;
-    tempatLahir: string;
-    tglLahir: string;
-    gender: string;
-    tlp: string;
-    nmrSTR: string;
-    mulaiSTR: string;
-    endSTR: string;
-    npwp: string;
-    jadwalPraktek: string;
-    poli: string;
     foto: string;
+    tlp: string;
+    gender: string;
+    tmptLahir: string;
+    tglLahir: string;
+    alamat: string;
+    nmrIdi: string;
+    nmrSTR: string;
+    endSTR: string;
+    biaya: string;
+    npwp: string;
+    poli: string;
   }
 
   const [form, setForm] = useState<Dokter>({
     nameDokter: "",
     NIK: "",
-    tempatLahir: "",
-    tglLahir: "",
-    gender: "",
-    tlp: "",
-    nmrSTR: "",
-    mulaiSTR: "",
-    endSTR: "",
-    npwp: "",
-    jadwalPraktek: "",
-    poli: "",
     foto: "",
+    tlp: "",
+    gender: "",
+    tmptLahir: "",
+    tglLahir: "",
+    alamat: "",
+    nmrIdi: "",
+    nmrSTR: "",
+    endSTR: "",
+    biaya: "",
+    npwp: "",
+    poli: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
 
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -95,17 +99,18 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
         setForm({
           nameDokter: "",
           NIK: "",
-          tempatLahir: "",
-          tglLahir: "",
-          gender: "",
-          tlp: "",
-          nmrSTR: "",
-    mulaiSTR: "",
-    endSTR: "",
-          npwp: "",
-          jadwalPraktek: "",
-          poli: "",
           foto: "",
+          tlp: "",
+          gender: "",
+          tmptLahir: "",
+          tglLahir: "",
+          alamat: "",
+          nmrIdi: "",
+          nmrSTR: "",
+          endSTR: "",
+          biaya: "",
+          npwp: "",
+          poli: "",
         });
       } catch (error) {
         showToast("Gagal menyimpan data pasien.", "error");
@@ -166,7 +171,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
 
       {showAddForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="max-w-196">
+          <div className="max-w-196 overflow-y-scroll max-h-196">
             <form onSubmit={handleSubmit}>
               <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
                 <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
@@ -178,11 +183,17 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                   </span>
                 </div>
                 <div className="p-6 md:p-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="mb-2 border-b border-slate-200">
+                    <span className="text-xs font-bold text-slate-500 uppercase">
+                      1. Identitas Pribadi
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-4">
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                          Nama Lengkap Dokter *
+                          Nama Lengkap *
                         </label>
                         <input
                           type="text"
@@ -190,7 +201,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           value={form.nameDokter}
                           onChange={handleChange}
                           placeholder="Nama Lengkap"
-                          className={`w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none
+                          className={` p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none
                         ${
                           isInputErorr === "ok"
                             ? "border-emerald-500 border-2 outline-none"
@@ -213,7 +224,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                       </div>
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase ">
-                          NIK Dokter
+                          NIK
                         </label>
                         <input
                           type="number"
@@ -224,19 +235,8 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           placeholder="NIK"
                         ></input>
                       </div>
-                      <div className="flex flex-col">
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
-                          Tanggal Lahir
-                        </label>
-                        <input
-                          type="date"
-                          name="tglLahir"
-                          value={form.tglLahir}
-                          onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
-                        ></input>
-                      </div>
-                        <div className="flex flex-col">
+
+                      <div>
                         <label className="text-xs font-bold text-slate-500 uppercase ">
                           Foto*
                         </label>
@@ -245,6 +245,19 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           name="foto"
                           value={form.foto}
                           onChange={handleChange}
+                          className="p-2.5 border w-84 border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                        ></input>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                          Nomor Tlp
+                        </label>
+                        <input
+                          type="number"
+                          name="tlp"
+                          value={form.tlp}
+                          onChange={handleChange}
+                          placeholder="Masukan Nomor Telepon"
                           className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
                         ></input>
                       </div>
@@ -279,17 +292,78 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           </label>
                         </div>
                       </div>
-
+                      <div className="flex">
+                        <div>
+                          <label className="text-xs font-bold text-slate-500 uppercase ">
+                            Tempat Lahir
+                          </label>
+                          <input
+                            type="text"
+                            name="tmptLahir"
+                            value={form.tmptLahir}
+                            onChange={handleChange}
+                            placeholder="Kota"
+                            className="p-2.5 border w-42 border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          ></input>
+                        </div>
+                        <div>
+                          <label className="text-xs font-bold text-slate-500 uppercase ">
+                            Tanggal Lahir
+                          </label>
+                          <input
+                            type="date"
+                            name="tglLahir"
+                            value={form.tglLahir}
+                            onChange={handleChange}
+                            className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          ></input>
+                        </div>
+                      </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-                          Poli
+                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                          Alamat
                         </label>
-                        <input
-                          name="poli"
-                          value={form.poli}
+                        <textarea
+                          name="alamat"
+                          value={form.alamat}
                           onChange={handleChange}
                           className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
-                          placeholder="Poli"
+                          placeholder="Masukan Alamat Domisili"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                          Nomor Tlp
+                        </label>
+                        <input
+                          type="number"
+                          name="tlp"
+                          value={form.tlp}
+                          onChange={handleChange}
+                          placeholder="Masukan Nomor Telepon"
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                        ></input>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-2 border-b border-slate-200 mt-8">
+                    <span className="text-xs font-bold text-slate-500 uppercase">
+                      2. Data Profesional & Legalitas
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                          NPA IDI
+                        </label>
+                        <input
+                          name="nmrIdi"
+                          value={form.nmrIdi}
+                          onChange={handleChange}
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          placeholder="Nomor Pokok Anggota IDI"
                         ></input>
                       </div>
                       <div>
@@ -305,31 +379,33 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           placeholder="Surat Tanda Registrasi"
                         ></input>
                       </div>
-                      <div>
+                      <div className="flex flex-col space-y-3">
                         <label className="text-xs font-bold text-slate-500 uppercase ">
-                          Masa Berlaku
+                          Tanggal Lahir
                         </label>
-                        <div className="flex gap-2 items-center">
                         <input
                           type="date"
-                          name="mulaiSTR"
-                          value={form.mulaiSTR}
+                          name="tglLahir"
+                          value={form.tglLahir}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
-                          placeholder="Surat Tanda Registrasi"
+                          className="p-2.5 border w-84 border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
                         ></input>
-                        <span>s/d</span>
-                         <input
-                          type="date"
-                          name="endSTR"
-                          value={form.endSTR}
-                          onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
-                          placeholder="Surat Tanda Registrasi"
-                        ></input>
-                        </div>
                       </div>
-
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                          Biaya Konsultasi
+                        </label>
+                        <input
+                          type="number"
+                          name="biaya"
+                          value={form.biaya}
+                          onChange={handleChange}
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          placeholder="Biaya Per 1 Jam"
+                        ></input>
+                      </div>
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase ">
                           Nomor NPWP
@@ -343,8 +419,22 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           placeholder="Nomor NPWP"
                         ></input>
                       </div>
+                      <div>
+                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                          Poli
+                        </label>
+                        <input
+                          type="text"
+                          name="poli"
+                          value={form.poli}
+                          onChange={handleChange}
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          placeholder="Poli"
+                        ></input>
+                      </div>
                     </div>
                   </div>
+
                   <div className="mt-8 flex justify-end gap-3">
                     <div className="flex justify-center mt-4 relative">
                       <button
@@ -353,17 +443,18 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           setForm({
                             nameDokter: "",
                             NIK: "",
-                            tempatLahir: "",
-                            tglLahir: "",
-                            gender: "",
-                            tlp: "",
-                             nmrSTR: "",
-    mulaiSTR: "",
-    endSTR: "",
-                            npwp: "",
-                            jadwalPraktek: "",
-                            poli: "",
                             foto: "",
+                            tlp: "",
+                            gender: "",
+                            tmptLahir: "",
+                            tglLahir: "",
+                            alamat: "",
+                            nmrIdi: "",
+                            nmrSTR: "",
+                            endSTR: "",
+                            biaya: "",
+                            npwp: "",
+                            poli: "",
                           });
                         }}
                         className="flex items-center justify-center gap-2 px-4 py-2 rounded text-slate-600 border-slate-500 hover:bg-red-400 hover:text-white transition border cursor-pointer"
