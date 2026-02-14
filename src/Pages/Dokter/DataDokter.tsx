@@ -4,10 +4,20 @@ import FormDokter from "./FormDokter";
 import TabelDokter from "./TabelDokter";
 
 interface Dokter {
-  id: string;
+   id: string;
   nameDokter: string;
+  NIK: string;
+  foto: string;
+  tlp: string;
   gender: string;
-  jadwalPraktek: string;
+  tmptLahir: string;
+  tglLahir: string;
+  alamat: string;
+  nmrIdi: string;
+  nmrSTR: string;
+  endSTR: string;
+  biaya: string;
+  npwp: string;
   poli: string;
 }
 
@@ -33,7 +43,7 @@ const DataDokter = () => {
   const filteredDokters = dokters.filter(
     (d) =>
       d.nameDokter.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.poli.toLowerCase().includes(searchQuery.toLowerCase())
+      d.poli.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -44,12 +54,7 @@ const DataDokter = () => {
         setSearchQuery={setSearchQuery}
       />
 
-     
-        <TabelDokter
-          dokters={filteredDokters}
-          fetchDokter={fetchDokter}
-        />
-    
+      <TabelDokter dokters={filteredDokters} fetchDokter={fetchDokter} />
     </>
   );
 };

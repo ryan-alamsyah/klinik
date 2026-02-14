@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Select from 'react-select';
 import {
   RefreshCw,
   Pencil,
@@ -14,6 +15,7 @@ import { SearchField } from "../../components/Ui/SearchField";
 import useRekamMedisPasien from "../../components/api/useRekamMedisPasien";
 import { useAntreanPasien } from "../../components/api/useAntreanPasein";
 import useUpdateStatusAntrean from "../../components/api/useUpdateStatusAntrean";
+import { useDataObat } from "../../components/api/useDataObat";
 
 const ListAntreanPasien = () => {
   const [isSpinner, setIsSpinner] = useState(false);
@@ -24,7 +26,11 @@ const ListAntreanPasien = () => {
   const [showUpdateStatusAntrean, setShowUpdateStatusAntrean] =
     useState<boolean>(false);
 
-  const [countPanggil, setCountPanggil] = useState({});
+  const { obat } = useDataObat ();
+  const optionsObat = obat.map(item => ({
+  value: item.namaObat,
+  label: item.namaObat
+}));
 
   const { rekamMedis } = useRekamMedisPasien();
   const { antreanPasien, fetchAntreanPasien } = useAntreanPasien();
@@ -227,6 +233,7 @@ const ListAntreanPasien = () => {
     if (pemeriksaanFisikFields.includes(name)) {
       setFormMedisRecord({
         ...formMedisRecord,
+       
         pemeriksaanFisik: {
           ...formMedisRecord.pemeriksaanFisik,
           [name]: value,
@@ -239,6 +246,12 @@ const ListAntreanPasien = () => {
       });
     }
   };
+  const handleSelectChange = (selectedOption: any) => {
+  setFormMedisRecord((prev) => ({
+    ...prev,
+    obat: selectedOption ? selectedOption.value : "",
+  }));
+};
 
   return (
     <>
@@ -377,7 +390,7 @@ const ListAntreanPasien = () => {
         </div>
       </div>
 
-      {showFormMedis && (
+      {!showFormMedis && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <form onSubmit={handleSubmit}>
             <div className="bg-white sm:w-198 w-120 rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 sm:overflow-hidden">
@@ -556,19 +569,15 @@ const ListAntreanPasien = () => {
                       <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
                         Obat *
                       </label>
-                      <select
-                        name="obat"
-                        value={formMedisRecord.obat}
-                        onChange={handleChange}
-                        className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
-                      >
-                        <option value="">Pilih Obat</option>
-                        {rekamMedis.map((obat, index) => (
-                          <option key={index} value={obat.obat}>
-                            {obat.obat}
-                          </option>
-                        ))}
-                      </select>
+                      <Select
+    options={optionsObat}
+    placeholder="Cari Obat..."
+    isClearable
+    isSearchable
+    onChange={handleSelectChange}
+    classNamePrefix="react-select"
+   
+  />
                     </div>
                   </div>
                 </div>

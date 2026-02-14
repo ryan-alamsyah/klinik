@@ -8,11 +8,22 @@ import Toast from "../../components/Ui/Toast";
 import { useDeleteDokter } from "../../components/api/useDeleteDokter";
 import { useEditDokter } from "../../components/api/useEditDokter";
 
+
 interface Dokter {
   id: string;
   nameDokter: string;
+  NIK: string;
+  foto: string;
+  tlp: string;
   gender: string;
-  jadwalPraktek: string;
+  tmptLahir: string;
+  tglLahir: string;
+  alamat: string;
+  nmrIdi: string;
+  nmrSTR: string;
+  endSTR: string;
+  biaya: string;
+  npwp: string;
   poli: string;
 }
 
@@ -76,7 +87,6 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
   const handleEditModal = (dokter: Dokter) => {
     setSelectedDokter(dokter);
     setShowEditModal(true);
-    showToast('oke', 'info')
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,8 +128,8 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
   const handleRefetchData = async () => {
     try {
       setIsSpinner(true);
-      showToast("oke", "success");
-   console.log(await fetchDokter());
+      showToast("Data dokter berhasil diperbaharui", "success");
+      console.log(await fetchDokter());
     } catch (err) {
       console.log(err);
       showToast("Gagal memuat data dokter.", "error");
@@ -134,19 +144,19 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
         {...notification}
         onClose={() => setNotification({ ...notification, open: false })}
       />
-      <div className="bg-slate-50 pb-14">
+      <div className="bg-slate-50">
         {/* TOAST */}
 
         {/* TABLE */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-y-scroll h-96 xl:h-152 ">
-          <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 ">
+          <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center relative bg-slate-50/50">
             <h2 className="font-bold text-slate-700">Data Dokter</h2>
 
             <div className="flex items-center gap-2">
               <button onClick={handleRefetchData}>
                 <RefreshCw
                   size={14}
-                  className={isSpinner ? "animate-spin" : ""}
+                  className={ `cursor-pointer ${isSpinner ? "animate-spin" : ""}`}
                 />
               </button>
               <span className="text-xs text-slate-500">
@@ -154,55 +164,97 @@ const TabelDokter = ({ dokters, fetchDokter }: Props) => {
               </span>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="text-xs uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
-                  <th className="px-6 py-4 font-bold">Nama Dokter</th>
-                  <th className="px-6 py-4 font-bold">Gender</th>
-                  <th className="px-6 py-4 font-bold">Poli</th>
-                  <th className="px-6 py-4 font-bold text-center">Aksi</th>
-                </tr>
-              </thead>
+          <div className="">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                
 
-              <tbody className="divide-y divide-slate-100">
-                {dokters.length > 0 ? (
-                  dokters.map((d) => (
-                    <tr key={d.id} className="border-t hover:bg-emerald-50/40">
-                      <td className="font-bold text-slate-800 p-4">
-                        {d.nameDokter}
-                      </td>
-                      <td className="px-6 py-4">{d.gender}</td>
-                      
-                      <td className="px-6 py-4">{d.poli}</td>
-                      <td className="px-6 py-4 flex justify-center gap-2">
-                        <button
-                          onClick={() => handleEditModal(d)}
-                          className="p-2 bg-emerald-500 text-white rounded"
-                        >
-                          <Pencil size={14} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteBtn(d.id)}
-                          className="p-2 bg-red-600 text-white rounded"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                <thead>
+                  <tr className="text-xs uppercase tracking-wider text-slate-400 bg-slate-50 border-b border-slate-100">
+                    <th className="px-6 py-4 font-bold w-64">Identitas dokter</th>
+                    <th className="px-6 py-4 font-bold">Nomor IDI</th>
+                    <th className="px-6 py-4 font-bold">Nomor STR</th>
+                    <th className="px-6 py-4 font-bold">STR Berlaku hingga</th>
+                    <th className="px-6 py-4 font-bold">tarif per jam</th>
+                    <th className="px-6 py-4 font-bold">NPWP</th>
+                    <th className="px-6 py-4 font-bold w-64">Kontak</th>
+
+                    <th className="px-6 py-4 font-bold text-center">Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-slate-100 ">
+                  {dokters.length > 0 ? (
+                    dokters.map((d) => (
+                      <tr
+                        key={d.id}
+                        className="border-t hover:bg-emerald-50/40"
+                      >
+                        <td className=" p-4">
+                          <div className="font-bold text-slate-800">
+                            {d.nameDokter}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {d.gender}
+                          </div>
+
+                          <div className="text-xs text-emerald-500 font-semibold uppercase">{`Poli ${d.poli}`}</div>
+                        </td>
+                        <td className="px-6 py-4 text-xs text-slate-600">
+                          {d.nmrIdi}
+                        </td>
+                        <td className="px-6 py-4 text-xs text-slate-600">
+                          {d.nmrSTR}
+                        </td>
+                        <td className="px-6 py-4 text-xs text-slate-600">
+                          {new Date(d.endSTR).toLocaleDateString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </td>
+                        <td className="px-6 py-4 text-xs text-slate-600">{`Rp  ${Number(d.biaya).toLocaleString("id-ID")}`}</td>
+                        <td className="px-6 py-4 text-xs text-slate-600">
+                          {d.npwp}
+                        </td>
+                        <td className="px-6 py-4  text-slate-600">
+                          <div className="text-xs text-slate-500">
+                            {d.alamat}
+                          </div>
+                          <div className="text-xs text-slate-500 mt-2">{`Tlp: ${d.tlp}`}</div>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleEditModal(d)}
+                              className="p-2 bg-emerald-500 text-white rounded cursor-pointer hover:bg-emerald-600"
+                            >
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteBtn(d.id)}
+                              className="p-2 bg-red-600 text-white rounded cursor-pointer hover:bg-red-700"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        className="px-6 py-12 text-center text-slate-400 italic "
+                      >
+                        Tidak ada data yang cocok dengan pencarian Anda.
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={4}
-                      className="px-6 py-12 text-center text-slate-400 italic"
-                    >
-                      Tidak ada data yang cocok dengan pencarian Anda.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

@@ -64,7 +64,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
 
@@ -171,7 +171,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
 
       {showAddForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="max-w-196 overflow-y-scroll max-h-196">
+          <div className="2xl:w-196 w-196 overflow-y-scroll max-h-142">
             <form onSubmit={handleSubmit}>
               <div className="bg-white rounded-2xl shadow-md border-2 border-emerald-100 mb-8 animate-in slide-in-from-top-4 duration-300 overflow-hidden">
                 <div className="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
@@ -189,7 +189,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex gap-4">
                     <div className="space-y-4">
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
@@ -201,7 +201,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           value={form.nameDokter}
                           onChange={handleChange}
                           placeholder="Nama Lengkap"
-                          className={` p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none
+                          className={` p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-84
                         ${
                           isInputErorr === "ok"
                             ? "border-emerald-500 border-2 outline-none"
@@ -223,7 +223,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                         </span>
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           NIK
                         </label>
                         <input
@@ -231,10 +231,11 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           name="NIK"
                           value={form.NIK}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-84"
                           placeholder="NIK"
                         ></input>
                       </div>
+                      
 
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase ">
@@ -249,7 +250,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                         ></input>
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           Nomor Tlp
                         </label>
                         <input
@@ -258,13 +259,14 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           value={form.tlp}
                           onChange={handleChange}
                           placeholder="Masukan Nomor Telepon"
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-84 "
                         ></input>
                       </div>
                     </div>
+
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           Jenis Kelamin
                         </label>
                         <div className="flex gap-4 mt-2">
@@ -320,19 +322,19 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                         </div>
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           Alamat
                         </label>
                         <textarea
                           name="alamat"
                           value={form.alamat}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-86"
                           placeholder="Masukan Alamat Domisili"
                         ></textarea>
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           Nomor Tlp
                         </label>
                         <input
@@ -341,7 +343,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           value={form.tlp}
                           onChange={handleChange}
                           placeholder="Masukan Nomor Telepon"
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-86"
                         ></input>
                       </div>
                     </div>
@@ -352,22 +354,22 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                       2. Data Profesional & Legalitas
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex gap-4">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
+                        <label className="block text-xs font-bold text-slate-500 uppercase">
                           NPA IDI
                         </label>
                         <input
                           name="nmrIdi"
                           value={form.nmrIdi}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none  w-84"
                           placeholder="Nomor Pokok Anggota IDI"
                         ></input>
                       </div>
                       <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
+                        <label className="block text-xs font-bold text-slate-500 uppercase ">
                           Nomor STR
                         </label>
                         <input
@@ -375,24 +377,24 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           name="nmrSTR"
                           value={form.nmrSTR}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none  w-84"
                           placeholder="Surat Tanda Registrasi"
                         ></input>
                       </div>
-                      <div className="flex flex-col space-y-3">
+                      <div className="flex flex-col">
                         <label className="text-xs font-bold text-slate-500 uppercase ">
-                          Tanggal Lahir
+                          Berlaku hingga
                         </label>
                         <input
                           type="date"
-                          name="tglLahir"
-                          value={form.tglLahir}
+                          name="endSTR"
+                          value={form.endSTR.toLocaleString()}
                           onChange={handleChange}
-                          className="p-2.5 border w-84 border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="block p-2.5 border w-84 border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
                         ></input>
                       </div>
                     </div>
-                    <div className="space-y-4">
+                      <div className="space-y-1">
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase ">
                           Biaya Konsultasi
@@ -402,7 +404,7 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           name="biaya"
                           value={form.biaya}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="block p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none  w-84"
                           placeholder="Biaya Per 1 Jam"
                         ></input>
                       </div>
@@ -415,23 +417,26 @@ const FormDokter = ({ fetchDokter, searchQuery, setSearchQuery }: Props) => {
                           name="npwp"
                           value={form.npwp}
                           onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
+                          className="block p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none w-84 "
                           placeholder="Nomor NPWP"
                         ></input>
                       </div>
-                      <div>
-                        <label className="text-xs font-bold text-slate-500 uppercase ">
-                          Poli
-                        </label>
-                        <input
-                          type="text"
-                          name="poli"
-                          value={form.poli}
-                          onChange={handleChange}
-                          className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none "
-                          placeholder="Poli"
-                        ></input>
-                      </div>
+                      <div className="flex flex-col gap-1">
+  <label className="text-xs font-bold text-slate-500 uppercase">
+    Poli
+  </label>
+  <select
+    name="poli"
+    value={form.poli}
+    onChange={handleChange}
+    className="p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
+  >
+    <option value="" disabled>Pilih---</option>
+    <option value="Umum">Umum</option>
+    <option value="Gigi">Gigi</option>
+    <option value="Anak">KIA</option>
+  </select>
+</div>
                     </div>
                   </div>
 

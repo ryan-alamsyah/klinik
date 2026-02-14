@@ -149,29 +149,64 @@
         "beratBadan": "26"
       },
       "suratKeterangan": ""
+    },
+    {
+      "id": "f86f",
+      "pasienId": "b0c4",
+      "name": "Nafisha",
+      "tglLahir": "2025-11-01",
+      "gender": "Perempuan",
+      "keluhan": "Lapar",
+      "diagnosa": "Sehat Saja",
+      "tindakan": "tindakan 3",
+      "obat": "",
+      "tanggalKunjungan": "2026-01-28",
+      "pemeriksaanFisik": {
+        "tensi": "120/80",
+        "suhu": "368",
+        "beratBadan": "15"
+      },
+      "suratKeterangan": ""
     }
   ],
   "data-dokter": [
     {
-      "id": "de73",
-      "nameDokter": "Dokter Nafisha",
-      "NIK": "152352353125",
+      "id": "caad",
+      "nameDokter": "Nafisha Kayla Sp A",
+      "NIK": "3279753079235",
       "foto": "",
-      "tlp": "0813",
+      "tlp": "081318695835",
       "gender": "Perempuan",
-      "tmptLahir": "Depok",
-      "tglLahir": "2026-02-05",
-      "alamat": "Puri Harmoni",
-      "nmrIdi": "4124325235",
-      "nmrSTR": "745345345",
-      "endSTR": "",
-      "biaya": "15000",
-      "npwp": "0655012193438000",
-      "poli": "umum"
+      "tmptLahir": "Bogor",
+      "tglLahir": "2021-07-02",
+      "alamat": "Jalan sudirman jakarta",
+      "nmrIdi": "797359234234",
+      "nmrSTR": "08395792343",
+      "endSTR": "2028-11-17",
+      "biaya": "250000",
+      "npwp": "890408327",
+      "poli": "Anak"
     },
     {
-      "id": "e77d",
-      "nameDokter": "Nurman",
+      "id": "d7ad",
+      "nameDokter": "Drg Kayla",
+      "NIK": "3279753079235",
+      "foto": "",
+      "tlp": "081318342835",
+      "gender": "Perempuan",
+      "tmptLahir": "Bogor",
+      "tglLahir": "2021-07-02",
+      "alamat": "Jalan Jalak Kabupaten Subang",
+      "nmrIdi": "797359234234",
+      "nmrSTR": "08395792343",
+      "endSTR": "2028-11-17",
+      "biaya": "250000",
+      "npwp": "890408327",
+      "poli": "Gigi"
+    },
+    {
+      "id": "6cf7",
+      "nameDokter": "asdasd",
       "NIK": "",
       "foto": "",
       "tlp": "",
@@ -184,42 +219,29 @@
       "endSTR": "",
       "biaya": "",
       "npwp": "",
-      "poli": ""
-    },
-    {
-      "id": "4597",
-      "nameDokter": "pmpkp;opop;pl-o-op",
-      "NIK": "",
-      "foto": "",
-      "tlp": "",
-      "gender": "Laki-laki",
-      "tmptLahir": "",
-      "tglLahir": "",
-      "alamat": "",
-      "nmrIdi": "",
-      "nmrSTR": "",
-      "endSTR": "",
-      "biaya": "",
-      "npwp": "",
-      "poli": ""
-    },
-    {
-      "id": "336e",
-      "nameDokter": "32er",
-      "NIK": "",
-      "foto": "",
-      "tlp": "",
-      "gender": "Perempuan",
-      "tmptLahir": "",
-      "tglLahir": "",
-      "alamat": "",
-      "nmrIdi": "",
-      "nmrSTR": "",
-      "endSTR": "",
-      "biaya": "",
-      "npwp": "",
-      "poli": ""
+      "poli": "Anak"
     }
   ],
-  "obat": []
+  "obat": [
+     {
+      "id": "60f7",
+      "namaObat": "Sanmol 10Mg",
+      "jmlahObat": "120"
+     },
+      {
+      "id": "60h7",
+      "namaObat": "Flutamol 10Mg",
+      "jmlahObat": "120"
+     },
+      {
+      "id": "60f9",
+      "namaObat": "Decolgen 10Mg",
+      "jmlahObat": "120"
+     },
+    {
+      "id": "40f7",
+      "namaObat": "Omeprazol 10Mg",
+      "jmlahObat": "120"
+     }
+  ]
 }
